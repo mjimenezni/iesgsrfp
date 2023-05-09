@@ -1,0 +1,125 @@
+const express = require('express');
+const router = express.Router();
+const dbconnection = require('../dbconnection');
+
+
+// Endpoint GET para obtener todas las noticias
+router.get('/', async (req, res) => {
+  let connection;
+  try {
+    connection = await dbconnection.getConnection();
+    const [results] = await connection.execute('SELECT * FROM noticias');
+    
+    res.json(results);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al obtener las noticias');
+  } finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+});
+
+// Endpoint GET para obtener una noticia por su ID
+router.get('/:idnoticia', async (req, res) => {
+  let connection;
+  try {
+    connection = await dbconnection.getConnection();
+    const [results] = await connection.execute(
+      'SELECT * FROM noticias WHERE idnoticia = ?',
+      [req.params.idnoticia]
+    );
+    if (results.length > 0) {
+      res.json(results[0]);
+    } else {
+      res.status(404).send('Noticia no encontrada');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al obtener la noticia');
+  }finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+});
+
+// Endpoint POST para agregar una nueva noticia
+router.post('/', async (req, res) => {
+  let connection;
+  try {
+    connection = await dbconnection.getConnection();
+
+    if (!req.body) {
+        return res.status(400).send('No se recibieron los datos de la noticia');
+      }
+    const { titulo, contenido, fecha, imagen } = req.body || {};
+    
+    const [results] = await connection.execute(
+      'INSERT INTO noticias (contenido, fecha, imagen,titulo) VALUES (?, ?, ?, ?)',
+      [contenido, fecha, imagen, titulo]
+    );
+    res.json({ idnoticia: results.insertId, contenido, fecha, imagen, titulo });
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al agregar la noticia'+ error.message);
+  }finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+});
+
+// Endpoint PUT para actualizar una noticia existente
+router.put('/:idnoticia', async (req, res) => {
+  let connection;
+  try {
+    connection = await dbconnection.getConnection();
+    const { titulo, contenido, fecha } = req.body;
+    await connection.execute(
+      'UPDATE noticias SET titulo = ?, contenido = ?, fecha = ? WHERE idnoticia = ?',
+      [titulo, contenido, fecha, req.params.idnoticia]
+    );
+ 
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al actualizar la noticia');
+  }finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+});
+
+// Endpoint DELETE para eliminar una noticia existente
+router.delete('/:idnoticia', async (req, res) => {
+  const id = req.params.idnoticia;
+  let connection;
+  try {
+    connection = await dbconnection.getConnection();
+
+    // Eliminamos la noticia
+    const [result] = await connection.execute('DELETE FROM noticias WHERE idnoticia = ?', [id]);
+
+    // Comprobamos si se ha eliminado alguna noticia
+    if (result.affectedRows === 0) {
+      res.status(404).send('Noticia no encontrada');
+    } else {
+      res.status(204).send(); // Enviamos una respuesta vacía si se ha eliminado correctamente
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al eliminar la noticia');
+  }finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+});
+
+
+// Exportar el enrutador como un middleware
+module.exports = router;

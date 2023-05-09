@@ -1,0 +1,145 @@
+<section class="vh-100">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-xl-10">
+        <div class="card" style="border-radius: 1rem">
+          <div class="row g-0">
+            <div class="col-md-6 col-lg-5 d-none d-md-block">
+              <img
+                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp"
+                alt="register form"
+                class="img-fluid"
+                style="border-radius: 1rem 0 0 1rem"
+              />
+            </div>
+            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+              <div class="card-body p-4 p-lg-5 text-black">
+                <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                  <h3 class="mb-5">Regístrate</h3>
+
+                  <div class="form-outline mb-4">
+                    <input
+                      formControlName="email"
+                      type="email"
+                      id="email"
+                      class="form-control form-control-lg"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.email.errors
+                      }"
+                    />
+                    <label class="form-label" for="email">Email</label>
+                    <div
+                      *ngIf="submitted && f.email.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.email.errors.required">
+                        El email es obligatorio
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <input
+                      formControlName="password"
+                      type="password"
+                      id="password"
+                      class="form-control form-control-lg"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.password.errors
+                      }"
+                    />
+                    <label class="form-label" for="password">Contraseña</label>
+                    <div
+                      *ngIf="submitted && f.password.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.password.errors.required">
+                        La contraseña es obligatoria
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <input
+                      formControlName="confirmPassword"
+                      type="password"
+                      id="confirmPassword"
+                      class="form-control form-control-lg"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.confirmPassword.errors
+                      }"
+                    />
+                    <label class="form-label" for="confirmPassword"
+                      >Repite contraseña</label
+                    >
+                    <div
+                      *ngIf="submitted && f.confirmPassword.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.confirmPassword.errors.required">
+                        La confirmación de contraseña es obligatoria
+                      </div>
+                      <div *ngIf="f.confirmPassword.errors.passwordMismatch">
+                        Las contraseñas no coinciden
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <input
+                      formControlName="nombre"
+                      type="text"
+                      id="nombre"
+                      class="form-control form-control-lg"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.nombre.errors
+                      }"
+                    />
+                    <label class="form-label" for="nombre">Nombre</label>
+                    <div
+                      *ngIf="submitted && f.nombre.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.nombre.errors.required">
+                        El nombre es obligatorio
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input
+                      formControlName="ape1"
+                      type="text"
+                      id="ape1"
+                      class="form-control form-control-lg"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.ape1.errors
+                      }"
+                    />
+                    <label class="form-label" for="ape1">Primer apellido</label>
+                    <div
+                      *ngIf="submitted && f.ape1.errors"
+                      class="invalid-feedback"
+                    ></div>
+                  </div>
+                  <div *ngIf="error !== ''" class="alert alert-danger">
+                    Error en el registro. {{ error }}
+                  </div>
+
+                  <div class="pt-1 mb-4">
+                    <button class="btn btn-warning btn-lg btn-block">
+                      Registrarse
+                    </button>
+                    <button
+                      type="reset"
+                      class="btn-lg btn-block btn btn-danger ms-2"
+                    >
+                      Borrar formulario
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

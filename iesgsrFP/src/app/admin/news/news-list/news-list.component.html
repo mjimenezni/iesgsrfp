@@ -1,0 +1,57 @@
+<section>
+  <div class="container py-2">
+    <h2>Gestión de Noticias</h2>
+    <button type="button" class="btn" routerLink="/admin/news/create">
+      <fa-icon [icon]="faUserPlus"></fa-icon> Añadir noticia
+    </button>
+    <table class="table align-middle mb-0 bg-white">
+      <thead class="bg-light">
+        <tr>
+          <th>Título</th>
+          <th>Contenido</th>
+          <th>Fecha</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="noticias && noticias.length > 0">
+        <tr *ngFor="let noticia of noticias">
+          <td>
+            <div class="d-flex align-items-center">
+              <div class="ms-3">
+                <p class="fw-bold mb-1">{{ noticia.titulo }}</p>
+              </div>
+            </div>
+          </td>
+          <td>
+            <p class="text-muted mb-0">{{ noticia.contenido }}</p>
+          </td>
+          <td>
+            <p class="text-muted mb-0">{{ noticia.fecha }}</p>
+          </td>
+          <!--<td>
+            <span class="badge badge-success rounded-pill d-inline"
+              >Active</span
+            >
+          </td>-->
+
+          <td>
+            <button
+              type="button"
+              class="btn btn-sm"
+              (click)="noticia.idnoticia && editNew(noticia.idnoticia)"
+            >
+              <fa-icon [icon]="faPencil"></fa-icon>
+            </button>
+            <button
+              type="button"
+              class="btn btn-sm"
+              (click)="noticia.idnoticia && confirmDelete(noticia.idnoticia)"
+            >
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

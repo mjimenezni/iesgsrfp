@@ -1,0 +1,70 @@
+<section>
+  <div class="container py-2">
+    <h2>Crear nuevo usuario</h2>
+
+    <form [formGroup]="usersForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          formControlName="email"
+          [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+        />
+        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+          El email es requerido
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nombre"
+          formControlName="nombre"
+          [ngClass]="{ 'is-invalid': submitted && f.nombre.errors }"
+        />
+        <div *ngIf="submitted && f.nombre.errors" class="invalid-feedback">
+          El nombre es requerido
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          formControlName="password"
+          [ngClass]="{ 'is-invalid': submitted && f.nombre.errors }"
+        />
+        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+          La contraseña es requerida
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="isAdmin" class="form-label">Es administrador:</label>
+        <input
+          type="checkbox"
+          class="form-check-input"
+          id="isAdmin"
+          formControlName="isAdmin"
+        />
+        <div *ngIf="submitted && f.isAdmin.errors" class="invalid-feedback">
+          Este campo es requerido
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Crear usuario</button>
+      <button
+        type="button"
+        class="btn btn-danger ms-2"
+        routerLink="/admin/users"
+      >
+        Cancelar
+      </button>
+    </form>
+  </div>
+</section>

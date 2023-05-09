@@ -1,0 +1,144 @@
+<!--Menú navegación superior-->
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <!-- Container wrapper -->
+  <div class="container-fluid">
+    <!-- Toggle button -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- Navbar brand -->
+    <a class="navbar-brand mt-2 mt-lg-0" href="#" routerLink="/index">
+      <img
+        src="../assets/img/logoIES.png"
+        height="80"
+        alt="Logo IES GSR"
+        loading="lazy"
+      />
+    </a>
+    <!-- Collapsible wrapper -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Left links -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="#" routerLink="/">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" routerLink="/news"> Noticias</a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="#"
+            routerLink="/calendar"
+            *ngIf="accountService.isLoggedIn | async"
+          >
+            Calendario de tareas y exámenes</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="#"
+            routerLink="/notes"
+            *ngIf="accountService.isLoggedIn | async"
+          >
+            Tablón de notas</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="#"
+            routerLink="/chat"
+            *ngIf="accountService.isLoggedIn | async"
+          >
+            Chat</a
+          >
+        </li>
+      </ul>
+      <!-- Left links -->
+    </div>
+    <!-- Collapsible wrapper -->
+
+    <!-- Right elements -->
+    <div class="d-flex align-items-center">
+      <!-- Icon -->
+      <a
+        *ngIf="!isLoggedIn"
+        class="text-reset me-3"
+        href="#"
+        routerLink="/login"
+      >
+        Iniciar sesión
+      </a>
+      <a
+        *ngIf="isLoggedIn"
+        class="text-reset me-3"
+        href="#"
+        (click)="onLogout()"
+      >
+        Cerrar sesión
+      </a>
+      <!-- Avatar -->
+      <div class="dropdown">
+        <a
+          class="dropdown-toggle d-flex align-items-center hidden-arrow"
+          href="#"
+          id="navbarDropdownMenuAvatar"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <img
+            src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+            class="rounded-circle"
+            height="25"
+            alt="Black and White Portrait of a Man"
+            loading="lazy"
+          />
+        </a>
+        <ul
+          class="dropdown-menu dropdown-menu-end"
+          aria-labelledby="navbarDropdownMenuAvatar"
+        >
+          <li>
+            <a class="dropdown-item" href="#">Mi perfil</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Configuración</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Cerrar sesión</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- Right elements -->
+  </div>
+  <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->
+<router-outlet></router-outlet>
+
+<!--Footer-->
+<footer class="bg-light text-center text-white">
+  <!-- Grid container -->
+  <div class="container p-4 pb-0"></div>
+  <!-- Grid container -->
+
+  <!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+    © 2023 Copyright:
+    <a class="text-white" href="/">IES GSR-FP</a>
+  </div>
+  <!-- Copyright -->
+</footer>

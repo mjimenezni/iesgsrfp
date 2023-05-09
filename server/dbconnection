@@ -1,0 +1,14 @@
+// conexión a la BD MySQL
+
+const mysql = require('mysql2/promise');
+const config = require('./dbconfig');
+
+let pool;
+
+module.exports = {
+  getConnection: async function () {
+    if (pool) return pool.getConnection();
+    pool = mysql.createPool(config);
+    return pool.getConnection();
+  }
+};
