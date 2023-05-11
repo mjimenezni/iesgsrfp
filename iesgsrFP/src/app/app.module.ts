@@ -17,6 +17,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarComponent } from './calendar/calendar.component';
 import { NotesComponent } from './notes/notes.component';
 import { AdminModule } from './admin/admin.module';
+import { ChatRoomComponent } from './chat/chat-room/chat-room.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { AdminModule } from './admin/admin.module';
     NewsComponent,
     CalendarComponent,
     NotesComponent,
+    ChatRoomComponent,
   ],
   imports: [
     BrowserModule,

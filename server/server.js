@@ -5,7 +5,7 @@ const app = express();
 //accesible desde la solicitud.
 const bodyParser = require('body-parser');
 const server = require('http').createServer(app);
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 const PORT = process.env.PORT || 8000;
 const io = require('socket.io')(server, {
   cors: {
@@ -20,17 +20,17 @@ const cors = require('cors');
 app.use(cors());
 app.use(bodyParser.json()); // middleware para analizar los datos JSON en las solicitudes POST
 
-//const dbconfig = require('./dbconfig');
+const dbconfig = require('./dbconfig');
 
 // Crear la conexión a la base de datos
-//const connection = mysql.createConnection(dbconfig);
+const pool = mysql.createPool(dbconfig);
 
 // rutas y lógica del servidor express
 const noticiasRouter = require('./routes/news');
 const loginRouter = require('./routes/auth');
 const usersRouter = require('./routes/users')
 const registerRouter = require('./routes/register')
-
+const chatRouter =require('./routes/chat');
 // Middleware para validar el token en las rutas protegidas
 //app.use('/chat', verificarToken, chatRouter);
 
@@ -39,6 +39,7 @@ app.use('/login', loginRouter);
 app.use('/noticias', noticiasRouter);
 app.use('/users', usersRouter);
 app.use('/register', registerRouter);
+app.use('/messages', chatRouter);
 
 //evitar error al intentar cargar favicon.ico
 app.use('/favicon.ico', (req, res) => {
@@ -49,41 +50,47 @@ app.get('/', (req, res) => {
   res.send('¡Bienvenido a mi servidor de Socket.io y API REST!');
 });
 
-// middleware para validar el token JWT
-function verificarToken(req, res, next) {
-  const token = req.headers.authorization;
-  if (!token) {
-    return res.status(401).json({ mensaje: 'Acceso denegado. Token no proporcionado.' });
-  }
-
-  jwt.verify(token, 'secreto', (error, decoded) => {
-    if (error) {
-      return res.status(401).json({ mensaje: 'Token inválido.' });
-    }
-    req.userId = decoded.idusuario;
-    req.isAdmin = decoded.isAdmin;
-    next();
-  });
-}
 //---------------------------------SOCKET.IO------------------------------//
 
 // manejar conexiones de sockets entrantes
 io.on('connection', (socket) => {
-  console.log('Un nuevo cliente se ha conectado');
+   console.log('Usuario conectado:', socket.id);
 
-  // emitir un mensaje al cliente cuando se conecta
-  socket.emit('mensaje', '¡Hola, cliente! Bienvenido a mi servidor de Socket.io.');
-
- 
-  // manejar los mensajes enviados por el cliente
-  socket.on('mensaje', (data) => {
-    console.log(`El cliente ha enviado el mensaje: ${data}`);
-  });
+   socket.on('private message', (data) => {
+      console.log(`message: ${data.mensaje}, fromUserId: ${data.idorigen}, toUserId: ${data.iddestino}`);
+      // Insertar el mensaje en la base de datos
+      pool.query('INSERT INTO mensajes (idorigen, iddestino, mensaje) VALUES (?, ?, ?)', [data.idorigen, data.iddestino, data.mensaje])
+        .then((result) => {
+        //console.log(`Mensaje almacenado en la base de datos: ${data.mensaje}`);
+      })
+    .catch((error) => {
+      console.error(`Error al almacenar el mensaje en la base de datos: ${error}`);
+    });
+    // Emitir el mensaje solo al usuario seleccionado
+      io.to(data.iddestino).emit('private message', { message:data.mensaje, idorigen:data.idorigen });
+      
+      //io.emit('private message', { message:data.mensaje, idorigen:data.iddestino }) 
+    });
 
   // desconectar el socket cuando el cliente se desconecta
   socket.on('disconnect', () => {
     console.log('El cliente se ha desconectado');
   });
+
+  socket.on('get messages', (data) => {
+    const idorigen = data.idorigen;
+    const iddestino = data.iddestino;
+    console.log(idorigen, iddestino);
+    pool.query('SELECT * FROM mensajes WHERE (idorigen = ? AND iddestino = ?) OR (idorigen = ? AND iddestino = ?) ORDER BY fechahora ASC', [idorigen, iddestino, iddestino, idorigen])
+      .then((result) => {
+        const messages = result[0];
+        io.to(socket.id).emit('messages', messages);
+        console.log(messages)
+    })
+    .catch((error) => {
+      console.error(`Error al recuperar los mensajes de la base de datos: ${error}`);
+    });
+});
 });
 
 //----------------------------------------------------------------------//

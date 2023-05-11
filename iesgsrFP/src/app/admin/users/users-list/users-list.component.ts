@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from 'src/app/_services/users.service';
-import { User } from 'src/app/_models';
+import { User } from 'src/app/_models/user';
 import { Router } from '@angular/router';
 import {
   faTrash,

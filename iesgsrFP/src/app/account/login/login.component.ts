@@ -7,7 +7,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { AccountService } from 'src/app/_services/account.service';
-import { AlertService } from 'src/app/_services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -47,9 +46,6 @@ export class LoginComponent {
       .login(this.f.email.value, this.f.password.value)
       .subscribe(
         (response) => {
-          // Decodifica el token para obtener la información de isAdmin
-          //const decodedToken: any = jwt_decode(response.token);
-          //const isAdmin = decodedToken.isAdmin;
           // Establece el token y actualiza el estado de inicio de sesión y isAdmin
           this.accountService.setToken(response.token);
           // Redirige al usuario a la página de inicio

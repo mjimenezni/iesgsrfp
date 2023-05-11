@@ -1,0 +1,84 @@
+<div
+  *ngIf="!selectedUser"
+  class="d-flex justify-content-center align-items-center"
+  style="height: 100%"
+>
+  <h3>Selecciona a un usuario de la lista</h3>
+</div>
+
+<div
+  class="pt-3 pe-3"
+  data-mdb-perfect-scrollbar="true"
+  style="position: relative; height: 400px"
+  *ngIf="selectedUser"
+>
+  <h2 class="text-center mb-5">{{ selectedUser.nombre }}</h2>
+  <div *ngFor="let message of messages">
+    <ng-container
+      *ngIf="message.idorigen !== currentUser.idusuario; else receivedMessage"
+    >
+      <!-- Mensaje enviado por el usuario actual -->
+      <div class="d-flex flex-row justify-content-start">
+        <img
+          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
+          alt="Avatar del usuario actual"
+          style="width: 45px; height: 100%"
+        />
+        <div>
+          <p
+            class="small p-2 ms-3 mb-1 rounded-3"
+            style="background-color: #f5f6f7"
+          >
+            {{ message.mensaje }}
+          </p>
+          <p class="small ms-3 mb-3 rounded-3 text-muted float-end">
+            12:00 PM | Aug 13
+          </p>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #receivedMessage>
+      <!-- Mensaje recibido por el usuario actual -->
+      <div class="d-flex flex-row justify-content-end">
+        <div>
+          <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
+            {{ message.mensaje }}
+          </p>
+          <p class="small me-3 mb-3 rounded-3 text-muted">12:00 PM | Aug 13</p>
+        </div>
+        <img
+          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+          alt="Avatar del remitente del mensaje"
+          style="width: 45px; height: 100%"
+        />
+      </div>
+    </ng-template>
+  </div>
+
+  <div
+    class="text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-5"
+  >
+    <img
+      src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
+      alt="avatar 3"
+      style="width: 40px; height: 100%"
+    />
+    <input
+      type="text"
+      class="form-control form-control-lg"
+      id="exampleFormControlInput2"
+      placeholder="Escribe tu mensaje"
+      [(ngModel)]="messageInput"
+    />
+    <!--<a class="ms-1 text-muted" href="#!"
+                    ><fa-icon [icon]="faPaperclip"></fa-icon
+                  ></a>
+                  <a class="ms-3 text-muted" href="#!"
+                    ><fa-icon [icon]="faSmile"></fa-icon
+                  ></a>-->
+    <button class="btn btn-primary" (click)="sendMessage()">
+      <fa-icon [icon]="faPaperplane"></fa-icon>
+    </button>
+  </div>
+</div>

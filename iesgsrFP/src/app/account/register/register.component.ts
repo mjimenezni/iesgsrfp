@@ -8,8 +8,8 @@ import {
 } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AccountService, AlertService } from 'src/app/_services';
-import { User } from 'src/app/_models';
+import { AccountService } from 'src/app/_services';
+import { User } from 'src/app/_models/user';
 
 @Component({
   selector: 'app-register',

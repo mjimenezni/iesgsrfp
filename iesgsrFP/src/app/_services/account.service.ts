@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
-import { User } from '../_models';
+import { User } from '../_models/user';
 import jwt_decode from 'jwt-decode';
 
 @Injectable({ providedIn: 'root' })
@@ -13,6 +13,7 @@ export class AccountService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   private isAdmin = new BehaviorSubject<boolean>(false);
   private apiUrl = environment.apiUrl;
+  private decodedToken: any;
 
   constructor(private http: HttpClient) {}
   get isLoggedIn() {
@@ -24,16 +25,21 @@ export class AccountService {
     // añadimos un nuevo método para obtener la información de isAdmin
     return this.isAdmin.asObservable();
   }
+  get currentUser(): any {
+    return this.decodedToken;
+  }
 
   //Establece el token y actualiza el estado de inicio de sesión
   public setToken(token: string): void {
     const decodedToken = jwt_decode(token) as {
       idusuario: number;
       isAdmin: boolean;
+      nombre: string;
     };
     localStorage.setItem('token', token); // almacena el token en el almacenamiento local
     this.loggedIn.next(true); // actualiza el estado de inicio de sesión a verdadero
     this.isAdmin.next(decodedToken.isAdmin); // actualiza el valor de isAdmin en el BehaviorSubject
+    this.decodedToken = decodedToken;
   }
   login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { email, password });
