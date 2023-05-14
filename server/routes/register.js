@@ -1,30 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const dbconnection = require('../dbconnection');
+const registerController = require('../controllers/register.controller');
 
-// Crear un usuario
-// Crear un usuario
-router.post('/', async (req, res) => {
-  let connection;
-  try {
-    connection = await dbconnection.getConnection();
-    
-    if (!req.body) {
-        return res.status(400).send('No se recibieron los datos del usuario');
-      }
-    const {  email,nombre, password, isAdmin } = req.body || {};
-      
-    const [results] = await connection.execute('INSERT INTO usuarios (nombre, email, password, isAdmin) VALUES (?, ?, ?, ?)', [nombre, email, password,isAdmin]);
-   res.json({ idusuario: results.insertId, email, nombre, password, isAdmin});
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error al crear el usuario');
-  }finally {
-    if (connection) {
-      connection.release();
-    }
-  }
-});
-
+// Endpoint POST para agregar un nuevo usuario
+router.post('/', registerController.createUser);
 
 module.exports = router;

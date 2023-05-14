@@ -1,0 +1,45 @@
+<section>
+  <div class="container py-2">
+    <h2>Editar nota</h2>
+
+    <form [formGroup]="notesForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="titulo" class="form-label">Título</label>
+        <input
+          type="text"
+          class="form-control"
+          id="titulo"
+          formControlName="titulo"
+          [ngClass]="{ 'is-invalid': submitted && f.titulo.errors }"
+        />
+        <div *ngIf="submitted && f.titulo.errors" class="invalid-feedback">
+          El título es requerido
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="fecha" class="form-label">Fecha</label>
+        <input
+          type="date"
+          class="form-control"
+          id="fecha"
+          formControlName="fecha"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="contenido" class="form-label">Contenido</label>
+        <textarea
+          class="form-control"
+          id="contenido"
+          formControlName="contenido"
+        ></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Actualizar nota</button>
+      <button type="button" class="btn btn-danger ms-2" (click)="onCancel()">
+        Cancelar
+      </button>
+    </form>
+  </div>
+</section>

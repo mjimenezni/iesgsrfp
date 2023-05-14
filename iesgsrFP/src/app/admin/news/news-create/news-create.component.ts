@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { News } from 'src/app/_models/news';
+import { New } from 'src/app/_models/new';
 import { NewsService } from 'src/app/_services';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -40,7 +40,7 @@ export class NewsCreateComponent {
       return;
     }
 
-    const news: News = {
+    const news: New = {
       titulo: this.f.titulo.value,
       fecha: this.f.fecha.value,
       contenido: this.f.contenido.value,

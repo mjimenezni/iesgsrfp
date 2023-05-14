@@ -16,6 +16,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { UsersDetailComponent } from './users/users-detail/users-detail.component';
 import { UsersCreateComponent } from './users/users-create/users-create.component';
 import { AdminRoutingModule } from './admin-routing.module';
+import { NotesCreateComponent } from './notes/notes-create/notes-create.component';
+import { NotesDetailComponent } from './notes/notes-detail/notes-detail.component';
+import { NotesListComponent } from './notes/notes-list/notes-list.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,9 @@ import { AdminRoutingModule } from './admin-routing.module';
     UsersListComponent,
     UsersDetailComponent,
     UsersCreateComponent,
+    NotesCreateComponent,
+    NotesDetailComponent,
+    NotesListComponent,
   ],
   imports: [
     CommonModule,

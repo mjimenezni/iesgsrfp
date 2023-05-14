@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NewsService } from '../_services/news.service';
-import { News } from '../_models/news';
+import { New } from '../_models/new';
 
 @Component({
   selector: 'app-news',
@@ -8,7 +8,7 @@ import { News } from '../_models/news';
   styleUrls: ['./news.component.css'],
 })
 export class NewsComponent {
-  noticias: News[] | undefined;
+  noticias: New[] | undefined;
   constructor(private newsService: NewsService) {}
   ngOnInit(): void {
     this.newsService.getAllNews().subscribe((noticias) => {

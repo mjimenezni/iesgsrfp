@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NewsService } from 'src/app/_services';
-import { News } from 'src/app/_models/news';
+import { New } from 'src/app/_models/new';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
@@ -14,7 +14,7 @@ export class NewsDetailComponent {
   newsForm!: FormGroup;
   submitted = false;
   id: number | undefined;
-  noticia: News = new News();
+  noticia: New = new New();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,7 +28,7 @@ export class NewsDetailComponent {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     //muestra los valores actuales en el formulario
-    this.newsService.getNewsById(id).subscribe((data: News) => {
+    this.newsService.getNewsById(id).subscribe((data: New) => {
       this.noticia = data;
       this.newsForm.patchValue({
         titulo: this.noticia.titulo,

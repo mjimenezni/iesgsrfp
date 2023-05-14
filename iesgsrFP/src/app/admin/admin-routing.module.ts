@@ -9,6 +9,9 @@ import { NewsCreateComponent } from './news/news-create/news-create.component';
 import { NewsDetailComponent } from './news/news-detail/news-detail.component';
 import { NewsListComponent } from './news/news-list/news-list.component';
 import { AuthGuard } from '../_helpers/auth.guard';
+import { NotesListComponent } from './notes/notes-list/notes-list.component';
+import { NotesCreateComponent } from './notes/notes-create/notes-create.component';
+import { NotesDetailComponent } from './notes/notes-detail/notes-detail.component';
 
 const routes: Routes = [
   {
@@ -22,6 +25,9 @@ const routes: Routes = [
       { path: 'users/:id/edit', component: UsersDetailComponent },
       { path: 'news/create', component: NewsCreateComponent },
       { path: 'news/:id/edit', component: NewsDetailComponent },
+      { path: 'notes', component: NotesListComponent },
+      { path: 'notes/create', component: NotesCreateComponent },
+      { path: 'notes/:id/edit', component: NotesDetailComponent },
       { path: '', component: UsersListComponent },
       { path: '', component: UsersListComponent },
     ],

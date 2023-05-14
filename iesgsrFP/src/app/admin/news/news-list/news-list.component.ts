@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NewsService } from 'src/app/_services';
-import { News } from 'src/app/_models/news';
+import { New } from 'src/app/_models/new';
 import { Router } from '@angular/router';
 
 import {
@@ -18,8 +18,8 @@ export class NewsListComponent {
   faTrash = faTrash;
   faPencil = faPencil;
   faUserPlus = faUserPlus;
-  noticias: News[] | undefined;
-  nuevaNoticia: News = new News();
+  noticias: New[] | undefined;
+  nuevaNoticia: New = new New();
   deleteConfirmation = false;
 
   constructor(private newsService: NewsService, private router: Router) {}
@@ -37,7 +37,7 @@ export class NewsListComponent {
   createNew() {
     this.newsService.createNews(this.nuevaNoticia).subscribe(
       () => {
-        this.nuevaNoticia = new News(); // limpiar los valores del formulario
+        this.nuevaNoticia = new New(); // limpiar los valores del formulario
         this.getNews(); // obtener las noticias actualizadas después de la creación
       },
       (error) => console.error(error)

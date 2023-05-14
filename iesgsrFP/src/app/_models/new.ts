@@ -1,4 +1,4 @@
-export class News {
+export class New {
   idnoticia?: number;
   titulo?: string;
   contenido?: string;
