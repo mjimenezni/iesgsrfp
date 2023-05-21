@@ -18,6 +18,55 @@ USE `iesgsrfp`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `calendarios`
+--
+
+DROP TABLE IF EXISTS `calendarios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `calendarios` (
+  `idcalendario` int NOT NULL AUTO_INCREMENT,
+  `idgrupo` int NOT NULL,
+  PRIMARY KEY (`idcalendario`,`idgrupo`),
+  KEY `idgrupo_idx` (`idgrupo`),
+  CONSTRAINT `idgrupo` FOREIGN KEY (`idgrupo`) REFERENCES `grupos` (`idgrupo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `calendarios`
+--
+
+LOCK TABLES `calendarios` WRITE;
+/*!40000 ALTER TABLE `calendarios` DISABLE KEYS */;
+/*!40000 ALTER TABLE `calendarios` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `eventos_calendario`
+--
+
+DROP TABLE IF EXISTS `eventos_calendario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `eventos_calendario` (
+  `idcalendario` int NOT NULL,
+  `fecha` date DEFAULT NULL,
+  `evento` varchar(45) NOT NULL,
+  PRIMARY KEY (`idcalendario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `eventos_calendario`
+--
+
+LOCK TABLES `eventos_calendario` WRITE;
+/*!40000 ALTER TABLE `eventos_calendario` DISABLE KEYS */;
+/*!40000 ALTER TABLE `eventos_calendario` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `grupos`
 --
 
@@ -58,8 +107,10 @@ CREATE TABLE `mensajes` (
   `fechahora` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idmensaje`),
   KEY `idorigen_idx` (`idorigen`),
-  KEY `iddestino_idx` (`iddestino`)
-) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb3;
+  KEY `iddestino_idx` (`iddestino`),
+  CONSTRAINT `iddestino` FOREIGN KEY (`iddestino`) REFERENCES `usuarios` (`idusuario`),
+  CONSTRAINT `idorigen` FOREIGN KEY (`idorigen`) REFERENCES `usuarios` (`idusuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +119,7 @@ CREATE TABLE `mensajes` (
 
 LOCK TABLES `mensajes` WRITE;
 /*!40000 ALTER TABLE `mensajes` DISABLE KEYS */;
-INSERT INTO `mensajes` VALUES (67,1,2,'Buenos días Usuario','2023-05-11 15:09:00'),(68,1,3,'Buenos días Teresa','2023-05-11 15:09:09'),(69,3,1,'Buenos días Administrador','2023-05-11 15:09:32'),(70,3,1,'Qué tal estás?','2023-05-11 15:09:39'),(71,3,2,'Hola Usuario!','2023-05-11 15:09:45'),(72,2,1,'Hola!','2023-05-11 15:10:13'),(73,2,3,'Hola!','2023-05-11 15:10:17'),(74,2,3,'Bienvenido','2023-05-11 15:10:21');
+INSERT INTO `mensajes` VALUES (67,1,2,'Buenos días Usuario','2023-05-11 15:09:00'),(68,1,3,'Buenos días Teresa','2023-05-11 15:09:09'),(69,3,1,'Buenos días Administrador','2023-05-11 15:09:32'),(70,3,1,'Qué tal estás?','2023-05-11 15:09:39'),(71,3,2,'Hola Usuario!','2023-05-11 15:09:45'),(72,2,1,'Hola!','2023-05-11 15:10:13'),(73,2,3,'Hola!','2023-05-11 15:10:17'),(74,2,3,'Bienvenido','2023-05-11 15:10:21'),(75,2,1,'Hola Administrador','2023-05-19 08:22:41'),(76,1,2,'¿Cómo estás?','2023-05-19 08:23:06');
 /*!40000 ALTER TABLE `mensajes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,7 +136,7 @@ CREATE TABLE `notas` (
   `contenido` longtext,
   `fecha` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idnota`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -94,7 +145,7 @@ CREATE TABLE `notas` (
 
 LOCK TABLES `notas` WRITE;
 /*!40000 ALTER TABLE `notas` DISABLE KEYS */;
-INSERT INTO `notas` VALUES (1,'Prematrícula FP!','Las fechas de inscripción a los ciclos formativos de grado medio y superior serán del 19 de junio al 7 de julio de 2023 ','2023-05-11 22:00:00'),(2,'Charlas SMR','El día 2 de junio hay una charla de dos alumnos que han estudiado ciclos formativos de grado superior ','2023-05-12 08:46:31');
+INSERT INTO `notas` VALUES (1,'Prematrícula FP','Las fechas de inscripción a los ciclos formativos de grado medio y superior serán del 19 de junio al 7 de julio de 2023 ','2023-05-11 22:00:00'),(2,'Charlas SMR','El día 2 de junio hay una charla de dos alumnos que han estudiado ciclos formativos de grado superior ','2023-05-12 08:46:31'),(3,'Excursión de fin de curso','El próximo día 10 de mayo realizaremos una excursión al Parque Científico de Valladolid a visitar....','2023-05-19 22:00:00');
 /*!40000 ALTER TABLE `notas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,8 +160,7 @@ CREATE TABLE `notas_grupo` (
   `idgrupo` int NOT NULL,
   `idnota` int NOT NULL,
   PRIMARY KEY (`idgrupo`,`idnota`),
-  KEY `idnota_idx` (`idnota`),
-  CONSTRAINT `idnota` FOREIGN KEY (`idnota`) REFERENCES `notas` (`idnota`)
+  KEY `idnota_idx` (`idnota`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -120,7 +170,7 @@ CREATE TABLE `notas_grupo` (
 
 LOCK TABLES `notas_grupo` WRITE;
 /*!40000 ALTER TABLE `notas_grupo` DISABLE KEYS */;
-INSERT INTO `notas_grupo` VALUES (1,1),(6,2),(7,2);
+INSERT INTO `notas_grupo` VALUES (1,1),(6,2),(7,2),(6,3),(1,5);
 /*!40000 ALTER TABLE `notas_grupo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,7 +188,7 @@ CREATE TABLE `noticias` (
   `contenido` longtext,
   `imagen` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idnoticia`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,7 +197,7 @@ CREATE TABLE `noticias` (
 
 LOCK TABLES `noticias` WRITE;
 /*!40000 ALTER TABLE `noticias` DISABLE KEYS */;
-INSERT INTO `noticias` VALUES (1,'Primera noticia de prueba','2023-04-22','Esto es una noticia de prueba ',NULL);
+INSERT INTO `noticias` VALUES (1,'Primera noticia de prueba','2023-04-22','Esto es una noticia de prueba ',NULL),(13,'Segunda noticia de prueba','2023-05-19','Esta es una noticia de prueba.','');
 /*!40000 ALTER TABLE `noticias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,7 +235,9 @@ CREATE TABLE `roles_usuario` (
   `idusuario` int NOT NULL,
   `idrol` int NOT NULL,
   PRIMARY KEY (`idusuario`,`idrol`),
-  KEY `idrol_idx` (`idrol`)
+  KEY `idrol_idx` (`idrol`),
+  CONSTRAINT `idrol` FOREIGN KEY (`idrol`) REFERENCES `roles` (`idrol`),
+  CONSTRAINT `idusuario` FOREIGN KEY (`idusuario`) REFERENCES `usuarios` (`idusuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -219,7 +271,7 @@ CREATE TABLE `usuarios` (
   `direccion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idusuario`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -243,9 +295,7 @@ CREATE TABLE `usuarios_grupo` (
   `idusuario` int NOT NULL,
   `idgrupo` int NOT NULL,
   PRIMARY KEY (`idusuario`,`idgrupo`),
-  KEY `idgrupo_idx` (`idgrupo`),
-  CONSTRAINT `idgrupo` FOREIGN KEY (`idgrupo`) REFERENCES `grupos` (`idgrupo`),
-  CONSTRAINT `idusuario` FOREIGN KEY (`idusuario`) REFERENCES `usuarios` (`idusuario`)
+  KEY `idgrupo_idx` (`idgrupo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -268,4 +318,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-14 12:17:32
+-- Dump completed on 2023-05-21 16:33:33
