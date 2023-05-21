@@ -19,6 +19,7 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { NotesCreateComponent } from './notes/notes-create/notes-create.component';
 import { NotesDetailComponent } from './notes/notes-detail/notes-detail.component';
 import { NotesListComponent } from './notes/notes-list/notes-list.component';
+import { CalendarComponent } from './calendar/calendar/calendar.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { NotesListComponent } from './notes/notes-list/notes-list.component';
     NotesCreateComponent,
     NotesDetailComponent,
     NotesListComponent,
+    CalendarComponent,
   ],
   imports: [
     CommonModule,

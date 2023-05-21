@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-//Hacer peticición usando sockets
-//import io from 'socket.io-client';
 import { HttpClient } from '@angular/common/http';
 import { New } from '../_models/new';
 import { Observable } from 'rxjs';
@@ -15,10 +13,7 @@ export class NewsService {
   public noticias: New[] | undefined;
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {
-    // Crea una instancia de Socket.IO para conectarte al servidor
-    //this.socket = io('http://localhost:8000');
-  }
+  constructor(private http: HttpClient) {}
   getAllNews() {
     return this.http.get<New[]>(`${this.apiUrl}/noticias`).pipe(
       map((noticias) => {
@@ -35,18 +30,6 @@ export class NewsService {
         return noticias;
       })
     );
-
-    //Usando sockets
-    /*this.socket.emit('getNews');
-    return new Promise((resolve, reject) => {
-      this.socket.emit('getNews');
-      this.socket.on('newsData', (data: any) => {
-        resolve(data);
-      });
-      this.socket.on('error', (error: any) => {
-        reject(error);
-      });
-    });*/
   }
   getNewsById(id: number): Observable<New> {
     const url = `${this.apiUrl}/noticias/${id}`;

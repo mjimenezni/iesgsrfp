@@ -47,34 +47,22 @@ export class NotesListComponent {
     });
   }
 
-  /*createNote() {
-    this.notesService.createNews(this.nuevaNoticia).subscribe(
+  deleteNote(id: number) {
+    this.notesService.deleteNote(id).subscribe(
       () => {
-        this.nuevaNoticia = new News(); // limpiar los valores del formulario
-        this.getNews(); // obtener las noticias actualizadas después de la creación
-      },
-      (error) => console.error(error)
-    );
-  }*/
-
-  /*deleteNew(id: number) {
-    this.newsService.deleteNews(id).subscribe(
-      () => {
-        this.getNews();
+        this.getNotes();
       },
       (error) => {
         console.error(error);
-        // Manejar el error en caso de que la eliminación de la noticia falle
+        // Manejar el error en caso de que la eliminación de la nota falle
       }
     );
-  }*/
+  }
 
   confirmDelete(id: number) {
-    const confirmation = window.confirm(
-      '¿Estás seguro de eliminar la noticia?'
-    );
+    const confirmation = window.confirm('¿Estás seguro de eliminar la nota?');
     if (confirmation) {
-      //this.deleteNew(id);
+      this.deleteNote(id);
       this.deleteConfirmation = false;
     }
   }

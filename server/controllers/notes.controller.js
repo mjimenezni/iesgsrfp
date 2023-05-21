@@ -79,7 +79,7 @@ exports.createNote = async (req, res) => {
       'INSERT INTO notas (contenido, fecha, titulo) VALUES (?, ?, ?)',
       [contenido, fecha, titulo]
     );
-    res.json({ idnota: results.insertId, contenido, imagen, titulo });
+    res.json({ idnota: results.insertId, contenido, titulo });
     
   } catch (error) {
     console.error(error);
@@ -113,7 +113,8 @@ exports.editNote = async (req, res) => {
 };
 
 exports.deleteNote = async (req, res) => {
-  const id = req.params.idnote;
+  const id = req.params.idnota;
+  console.log(id);
   let connection;
   try {
     connection = await dbconnection.getConnection();

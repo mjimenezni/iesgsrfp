@@ -31,12 +31,14 @@ export class UsersDetailComponent {
       this.usersForm.patchValue({
         nombre: this.usuario.nombre,
         email: this.usuario.email,
+        isAdmin: this.usuario.isAdmin,
       });
     });
 
     this.usersForm = this.formBuilder.group({
       nombre: ['', Validators.required],
       email: ['', Validators.required],
+      isAdmin: ['', Validators.required],
     });
 
     this.userService.getUserById(id).subscribe(

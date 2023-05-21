@@ -61,11 +61,11 @@ exports.createUser = async (req, res) => {
 
 exports.editUser = async (req, res) => {
   const id = req.params.idusuario;
-  const { nombre, email, password } = req.body;
+  const { nombre, email, isAdmin } = req.body;
   let connection;
   try {
     connection = await dbconnection.getConnection();
-    const [results] = await connection.execute('UPDATE usuarios SET nombre = ?, email = ?, password = ? WHERE idusuario = ?', [nombre, email, password, id]);
+    const [results] = await connection.execute('UPDATE usuarios SET nombre = ?, email = ?, isAdmin = ? WHERE idusuario = ?', [nombre, email, isAdmin,id]);
     if (results.affectedRows === 0) {
       return res.status(404).send(`Usuario con id ${id} no encontrado`);
     }

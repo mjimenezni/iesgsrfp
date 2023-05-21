@@ -5,12 +5,12 @@
       <div *ngIf="noticias && noticias.length > 0">
         <ul>
           <li class="list-unstyled" *ngFor="let noticia of noticias">
-            <div class="col-md-4 mb-4">
-              <div
-                class="bg-image hover-overlay ripple shadow-2-strong rounded-5"
-                data-mdb-ripple-color="light"
-              >
-                <img src="{{ noticia.imagen }}" class="img-fluid" />
+            <div class="row">
+              <div class="col-md-4 mb-4">
+                <img
+                  src="../../assets/img/noticia.jpg"
+                  class="img-fluid rounded-5 img-thumbnail"
+                />
                 <a href="#!">
                   <div
                     class="mask"
@@ -18,13 +18,14 @@
                   ></div>
                 </a>
               </div>
-            </div>
-            <div class="col-md-8 mb-4">
-              <h3>
-                <strong>{{ noticia.titulo }}</strong>
-              </h3>
-              <p class="text-muted">{{ noticia.contenido }}</p>
-              <small>{{ noticia.fecha }}</small>
+
+              <div class="col-md-8 mb-4 mt-4">
+                <h3>
+                  <strong>{{ noticia.titulo }}</strong>
+                </h3>
+                <p class="text-muted">{{ noticia.contenido }}</p>
+                <small>{{ noticia.fecha }}</small>
+              </div>
             </div>
           </li>
         </ul>

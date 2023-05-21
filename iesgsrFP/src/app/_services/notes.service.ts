@@ -45,4 +45,13 @@ export class NotesService {
     const url = `${this.apiUrl}/notes/${id}`;
     return this.http.put(url, note);
   }
+
+  createNote(note: Note): Observable<Note> {
+    return this.http.post<Note>(`${this.apiUrl}/notes`, note);
+  }
+
+  deleteNote(id: number): Observable<any> {
+    const url = `${this.apiUrl}/notes/${id}`;
+    return this.http.delete(url);
+  }
 }

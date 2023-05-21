@@ -12,6 +12,7 @@ import { AuthGuard } from '../_helpers/auth.guard';
 import { NotesListComponent } from './notes/notes-list/notes-list.component';
 import { NotesCreateComponent } from './notes/notes-create/notes-create.component';
 import { NotesDetailComponent } from './notes/notes-detail/notes-detail.component';
+import { CalendarComponent } from '../calendar/calendar.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,7 @@ const routes: Routes = [
       { path: 'notes', component: NotesListComponent },
       { path: 'notes/create', component: NotesCreateComponent },
       { path: 'notes/:id/edit', component: NotesDetailComponent },
+      { path: 'calendar', component: CalendarComponent },
       { path: '', component: UsersListComponent },
       { path: '', component: UsersListComponent },
     ],
