@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
@@ -13,7 +13,10 @@ export class AccountService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   private isAdmin = new BehaviorSubject<boolean>(false);
   private apiUrl = environment.apiUrl;
-  private decodedToken: any;
+  private decodedToken = new BehaviorSubject<any>(null);
+  private avatarChanged = new Subject<string>();
+
+  public avatarChanged$ = this.avatarChanged.asObservable();
 
   constructor(private http: HttpClient) {}
   get isLoggedIn() {
@@ -25,8 +28,8 @@ export class AccountService {
     // añadimos un nuevo método para obtener la información de isAdmin
     return this.isAdmin.asObservable();
   }
-  get currentUser(): any {
-    return this.decodedToken;
+  get currentUser(): Observable<any> {
+    return this.decodedToken.asObservable();
   }
 
   //Establece el token y actualiza el estado de inicio de sesión
@@ -35,11 +38,13 @@ export class AccountService {
       idusuario: number;
       isAdmin: boolean;
       nombre: string;
+      avatar: string;
     };
     localStorage.setItem('token', token); // almacena el token en el almacenamiento local
+
     this.loggedIn.next(true); // actualiza el estado de inicio de sesión a verdadero
     this.isAdmin.next(decodedToken.isAdmin); // actualiza el valor de isAdmin en el BehaviorSubject
-    this.decodedToken = decodedToken;
+    this.decodedToken.next(decodedToken);
   }
   login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { email, password });
@@ -50,5 +55,13 @@ export class AccountService {
   }
   register(userData: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, userData);
+  }
+  public setAvatar(avatar: string): Observable<any> {
+    const updatedToken = this.decodedToken.value;
+    updatedToken.avatar = avatar;
+    this.decodedToken.next(updatedToken);
+    this.avatarChanged.next(avatar);
+
+    return of(null);
   }
 }

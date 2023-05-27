@@ -11,4 +11,5 @@
   telefono?: string;
   direccion?: string;
   email2?: string;
+  avatar?: string;
 }

@@ -80,14 +80,8 @@
       >
         Iniciar sesión
       </a>
-      <a
-        *ngIf="isLoggedIn"
-        class="text-reset me-3"
-        href="#"
-        (click)="onLogout()"
-      >
-        Cerrar sesión
-      </a>
+      <p class="text-center p-3" *ngIf="isLoggedIn">{{ currentUser.nombre }}</p>
+
       <!-- Avatar -->
       <div *ngIf="isLoggedIn" class="dropdown">
         <a
@@ -96,25 +90,28 @@
           id="navbarDropdownMenuAvatar"
           role="button"
           data-bs-toggle="dropdown"
-          data-bs-target="#dropdownMenu"
         >
           <img
-            src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+            [src]="currentUser.avatar"
             class="rounded-circle"
-            height="25"
-            alt="Black and White Portrait of a Man"
+            height="50"
+            alt="Avatar"
             loading="lazy"
           />
         </a>
         <ul class="dropdown-menu dropdown-menu-end" id="dropdownMenu">
           <li>
-            <a class="dropdown-item" href="#">Mi perfil</a>
+            <a class="dropdown-item" href="#" routerLink="/profile"
+              >Mi perfil</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#">Configuración</a>
+            <a class="dropdown-item" href="#">Cambiar contraseña</a>
           </li>
           <li>
-            <a class="dropdown-item" href="#">Cerrar sesión</a>
+            <a class="dropdown-item" href="#" (click)="onLogout()"
+              >Cerrar sesión</a
+            >
           </li>
         </ul>
       </div>

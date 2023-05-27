@@ -8,6 +8,8 @@ import { RegisterComponent } from './account/register/register.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { NotesComponent } from './notes/notes.component';
 import { AuthGuard } from './_helpers/auth.guard';
+import { ProfileCardComponent } from './profile/profile-card/profile-card.component';
+import { ProfileEditComponent } from './profile/profile-edit/profile-edit.component';
 
 const routes: Routes = [
   {
@@ -23,6 +25,16 @@ const routes: Routes = [
   { path: 'news', component: NewsComponent },
   { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard] },
   { path: 'notes', component: NotesComponent, canActivate: [AuthGuard] },
+  {
+    path: 'profile',
+    component: ProfileCardComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'profile/edit',
+    component: ProfileEditComponent,
+    canActivate: [AuthGuard],
+  },
   //{ path: 'admin', component: AdminComponent },
 
   // en el resto de casos redirecciona al inicio

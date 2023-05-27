@@ -43,17 +43,18 @@ export class LoginComponent {
     }
     this.accountService
       .login(this.f.email.value, this.f.password.value)
-      .subscribe(
-        (response) => {
+      .subscribe({
+        next: (response) => {
           // Establece el token y actualiza el estado de inicio de sesión y isAdmin
           this.accountService.setToken(response.token);
           // Redirige al usuario a la página de inicio
           this.router.navigate(['/']);
         },
-        (error) => {
+        error: (error) => {
+          console.log(error);
           // El inicio de sesión ha fallado, mostrar un mensaje de error al usuario
           this.error = error.error.message;
-        }
-      );
+        },
+      });
   }
 }

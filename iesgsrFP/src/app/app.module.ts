@@ -18,6 +18,9 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { NotesComponent } from './notes/notes.component';
 import { AdminModule } from './admin/admin.module';
 import { ChatRoomComponent } from './chat/chat-room/chat-room.component';
+import { ProfileCardComponent } from './profile/profile-card/profile-card.component';
+import { ProfileEditComponent } from './profile/profile-edit/profile-edit.component';
+import { ProfilePasswordComponent } from './profile/profile-password/profile-password.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +33,9 @@ import { ChatRoomComponent } from './chat/chat-room/chat-room.component';
     CalendarComponent,
     NotesComponent,
     ChatRoomComponent,
+    ProfileCardComponent,
+    ProfileEditComponent,
+    ProfilePasswordComponent,
   ],
   imports: [
     BrowserModule,

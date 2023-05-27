@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NewsService } from 'src/app/_services';
 import { New } from 'src/app/_models/new';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 import {
   faTrash,
@@ -22,7 +23,11 @@ export class NewsListComponent {
   nuevaNoticia: New = new New();
   deleteConfirmation = false;
 
-  constructor(private newsService: NewsService, private router: Router) {}
+  constructor(
+    private newsService: NewsService,
+    private router: Router,
+    private datePipe: DatePipe
+  ) {}
 
   ngOnInit() {
     this.getNews();
@@ -30,6 +35,10 @@ export class NewsListComponent {
 
   getNews() {
     this.newsService.getAllNews().subscribe((noticias) => {
+      // Formatear la fecha de cada noticia
+      noticias.forEach((noticia) => {
+        noticia.fecha = this.datePipe.transform(noticia.fecha, 'dd/MM/yyyy');
+      });
       this.noticias = noticias;
     });
   }

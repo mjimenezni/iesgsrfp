@@ -31,17 +31,16 @@ export class ChatRoomComponent implements OnInit {
     private accountService: AccountService
   ) {}
   ngOnInit(): void {
-    this.currentUser = this.getCurrentUser();
+    this.accountService.currentUser.subscribe((currentUser) => {
+      this.currentUser = currentUser;
+    });
     this.chatService.selectedUser$.subscribe((user) => {
       this.selectedUser = user;
       if (this.selectedUser) {
         const receiverId = this.selectedUser.idusuario;
 
         this.chatService
-          .getMessages(
-            this.accountService.currentUser.idusuario,
-            receiverId || 0
-          )
+          .getMessages(this.currentUser.idusuario, receiverId || 0)
           .subscribe((messages) => {
             this.messages = messages;
           });
@@ -57,15 +56,12 @@ export class ChatRoomComponent implements OnInit {
     const message = {
       mensaje: this.messageInput,
       iddestino: this.selectedUser?.idusuario,
-      idorigen: this.accountService.currentUser.idusuario,
+      idorigen: this.currentUser.idusuario,
     };
     //const messageCopy = { ...message };
 
     this.chatService.sendMessageToUser(message);
     this.messages.push(message);
     this.messageInput = '';
-  }
-  getCurrentUser(): any {
-    return this.accountService.currentUser;
   }
 }

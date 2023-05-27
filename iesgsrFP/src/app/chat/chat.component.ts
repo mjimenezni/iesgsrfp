@@ -29,7 +29,9 @@ export class ChatComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getUsers();
 
-    this.currentUser = this.getCurrentUser();
+    this.accountService.currentUser.subscribe((currentUser) => {
+      this.currentUser = currentUser;
+    });
     this.chatService.connect();
   }
   ngOnDestroy(): void {
@@ -41,11 +43,6 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.users = users;
     });
   }
-
-  getCurrentUser(): any {
-    return this.accountService.currentUser;
-  }
-
   selectUser(user: User) {
     this.chatService.selectUser(user);
   }

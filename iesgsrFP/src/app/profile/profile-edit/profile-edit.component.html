@@ -1,0 +1,111 @@
+<section>
+  <div class="container py-2">
+    <div class="row d-flex justify-content-center align-items-center h-80">
+      <div class="col col-lg-8 mb-6 col-xl-10">
+        <div class="card mb-3" style="border-radius: 0.5rem">
+          <div class="row g-0" *ngIf="datosUser">
+            <div
+              class="col-md-4 gradient-custom text-center text-white"
+              style="
+                border-top-left-radius: 0.5rem;
+                border-bottom-left-radius: 0.5rem;
+              "
+            >
+              <img
+                [src]="datosUser.avatar"
+                alt="Avatar"
+                class="img-fluid my-5"
+                style="width: 80px"
+              />
+              <h5>{{ datosUser.email }}</h5>
+              <p></p>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body p-4">
+                <div *ngIf="datosUser">
+                  <h2>Editar perfil</h2>
+                  <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+                    <div>
+                      <label for="nombre" class="form-label">Nombre</label>
+                      <input
+                        type="text"
+                        id="nombre"
+                        class="form-control"
+                        formControlName="nombre"
+                        required
+                      />
+                      <label for="ape1" class="form-label mt-3"
+                        >Apellido1</label
+                      >
+                      <input
+                        type="text"
+                        id="ape1"
+                        class="form-control"
+                        formControlName="ape1"
+                        required
+                      />
+                      <label for="ape2" class="form-label mt-3"
+                        >Apellido2</label
+                      >
+                      <input
+                        type="text"
+                        id="ape2"
+                        class="form-control"
+                        formControlName="ape2"
+                        required
+                      />
+                      <label for="telefono" class="form-label mt-3"
+                        >Teléfono</label
+                      >
+                      <input
+                        type="number"
+                        id="telefono"
+                        class="form-control"
+                        formControlName="telefono"
+                        required
+                      />
+                      <label for="fecha_nac" class="form-label mt-3"
+                        >Fecha nacimiento</label
+                      >
+                      <input
+                        type="date"
+                        id="fecha_nac"
+                        class="form-control"
+                        formControlName="fecha_nac"
+                        required
+                      />
+                      <label for="avatar" class="form-label mt-3">Avatar</label>
+                      <div class="avatar-options">
+                        <img
+                          class="img-fluid my-2"
+                          style="width: 80px; cursor: pointer"
+                          *ngFor="let option of avatarOptions"
+                          [src]="option"
+                          [alt]="option"
+                          (click)="selectAvatar(option)"
+                          [class.selected-avatar]="option === selectedAvatar"
+                        />
+                      </div>
+                    </div>
+                    <div class="mt-4">
+                      <button type="submit" class="btn btn-primary">
+                        Actualizar datos
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-danger ms-3"
+                        routerLink="/profile"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

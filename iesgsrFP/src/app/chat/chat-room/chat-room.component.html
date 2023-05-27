@@ -20,7 +20,7 @@
       <!-- Mensaje enviado por el usuario actual -->
       <div class="d-flex flex-row justify-content-start">
         <img
-          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
+          [src]="currentUser.avatar"
           alt="Avatar del usuario actual"
           style="width: 45px; height: 100%"
         />
@@ -48,7 +48,7 @@
           <p class="small me-3 mb-3 rounded-3 text-muted">12:00 PM | Aug 13</p>
         </div>
         <img
-          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+          [src]="selectedUser.avatar"
           alt="Avatar del remitente del mensaje"
           style="width: 45px; height: 100%"
         />
@@ -60,7 +60,7 @@
     class="text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-5"
   >
     <img
-      src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
+      [src]="currentUser.avatar"
       alt="avatar 3"
       style="width: 40px; height: 100%"
     />

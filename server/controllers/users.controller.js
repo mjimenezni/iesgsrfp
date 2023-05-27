@@ -1,4 +1,6 @@
 const dbconnection = require('../dbconnection');
+// Importamos el módulo de jsonwebtoken para generar tokens JWT
+const jwt = require('jsonwebtoken');
 
 exports.getAllUsers = async (req, res) => {
      let connection;
@@ -61,15 +63,58 @@ exports.createUser = async (req, res) => {
 
 exports.editUser = async (req, res) => {
   const id = req.params.idusuario;
-  const { nombre, email, isAdmin } = req.body;
+  const { nombre, email, isAdmin, ape1,ape2, telefono, fecha_nac, avatar } = req.body;
   let connection;
   try {
     connection = await dbconnection.getConnection();
-    const [results] = await connection.execute('UPDATE usuarios SET nombre = ?, email = ?, isAdmin = ? WHERE idusuario = ?', [nombre, email, isAdmin,id]);
+    let updateQuery = 'UPDATE usuarios SET nombre = ?';
+    const updateValues = [nombre];
+
+    if (ape1 !== undefined) {
+      updateQuery += ', ape1 = ?';
+      updateValues.push(ape1);
+    }
+     if (ape2 !== undefined) {
+      updateQuery += ', ape2 = ?';
+      updateValues.push(ape2);
+    }
+    if (isAdmin !== undefined) {
+      updateQuery += ', isAdmin = ?';
+      updateValues.push(isAdmin);
+    }
+    if (email !== undefined) {
+      updateQuery += ', email = ?';
+      updateValues.push(email);
+    }
+     if (telefono !== undefined) {
+      updateQuery += ', telefono = ?';
+      updateValues.push(telefono);
+    }
+
+    if (fecha_nac !== undefined) {
+      updateQuery += ', fecha_nac = ?';
+      updateValues.push(fecha_nac);
+    }
+     if (avatar !== undefined) {
+      updateQuery += ', avatar = ?';
+      updateValues.push(avatar);
+    }
+
+    updateQuery += ' WHERE idusuario = ?';
+    updateValues.push(id);
+    const [results] = await connection.execute(updateQuery, updateValues);
     if (results.affectedRows === 0) {
       return res.status(404).send(`Usuario con id ${id} no encontrado`);
     }
-    res.json({ message: `Usuario con id ${id} actualizado exitosamente` });
+     // Generamos un nuevo token JWT con la información del usuario (idusuario e isAdmin)
+    const token = jwt.sign(
+      { idusuario: id, isAdmin:isAdmin, nommbre: nombre, avatar:avatar },
+      'secreto', // Clave secreta para cifrar el token
+      { expiresIn: '1h' } // El token expira en 1 hora
+    );
+
+    // Devolvemos el token como respuesta
+    res.json({ token });
   } catch (error) {
     console.error(error);
     res.status(500).send(`Error al actualizar el usuario con id ${id}`);
