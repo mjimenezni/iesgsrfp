@@ -11,10 +11,14 @@ router.get('/:idusuario', usersController.getUserById);
 // Crear un usuario
 router.post('/', usersController.createUser);
 
+// Endpoint PUT para el cambio de contraseña
+router.put('/change-password', usersController.changePassword);
+
 // Actualizar un usuario por su id
 router.put('/:idusuario', usersController.editUser);
 
 // Eliminar un usuario por su id
 router.delete('/:idusuario', usersController.deleteUser);
+
 
 module.exports = router;

@@ -7,5 +7,6 @@ const authController = require('../controllers/auth.controller');
 // Endpoint POST para el login de usuarios
 router.post('/', authController.loginUser);
 
+
 // Exportamos el router de autenticación
 module.exports = router;

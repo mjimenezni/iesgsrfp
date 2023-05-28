@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, of, throwError } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
@@ -63,5 +63,21 @@ export class AccountService {
     this.avatarChanged.next(avatar);
 
     return of(null);
+  }
+
+  changePassword(
+    email: string,
+    currentPassword: string,
+    newPassword: string
+  ): Observable<any> {
+    return this.login(email, currentPassword).pipe(
+      switchMap(() => {
+        const body = {
+          email: email,
+          newPassword: newPassword,
+        };
+        return this.http.put<any>(`${this.apiUrl}/users/change-password`, body);
+      })
+    );
   }
 }

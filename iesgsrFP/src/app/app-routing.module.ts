@@ -10,6 +10,7 @@ import { NotesComponent } from './notes/notes.component';
 import { AuthGuard } from './_helpers/auth.guard';
 import { ProfileCardComponent } from './profile/profile-card/profile-card.component';
 import { ProfileEditComponent } from './profile/profile-edit/profile-edit.component';
+import { ProfilePasswordComponent } from './profile/profile-password/profile-password.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,11 @@ const routes: Routes = [
   {
     path: 'profile/edit',
     component: ProfileEditComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'profile/pass',
+    component: ProfilePasswordComponent,
     canActivate: [AuthGuard],
   },
   //{ path: 'admin', component: AdminComponent },

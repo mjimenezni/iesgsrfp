@@ -116,7 +116,7 @@ exports.editUser = async (req, res) => {
     // Devolvemos el token como respuesta
     res.json({ token });
   } catch (error) {
-    console.error(error);
+    console.error("Error al editar un usuario",error);
     res.status(500).send(`Error al actualizar el usuario con id ${id}`);
   }finally {
     if (connection) {
@@ -144,3 +144,38 @@ exports.deleteUser = async (req, res) => {
     }
   }
 };
+
+exports.changePassword = async (req, res) => {
+  let connection;
+
+  try {
+    // Obtenemos el email y la nueva contraseña del body del request
+    const { email, newPassword } = req.body;
+
+    // Obtenemos una conexión a la base de datos
+    connection = await dbconnection.getConnection();
+
+    // Actualizamos la contraseña del usuario en la base de datos
+    const [results] = await connection.execute(
+      'UPDATE usuarios SET password = ? WHERE email = ?',
+      [newPassword, email]
+    );
+
+    // Verificamos si se actualizó correctamente la contraseña
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    // Devolvemos una respuesta exitosa
+    res.json({ success: true });
+  } catch (error) {
+    // En caso de error, devolvemos un error genérico
+    console.error(error);
+    res.status(500).send('Error al cambiar la contraseña');
+  } finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+};
+
