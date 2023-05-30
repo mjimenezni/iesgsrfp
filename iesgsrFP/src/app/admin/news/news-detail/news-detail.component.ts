@@ -15,6 +15,7 @@ export class NewsDetailComponent {
   submitted = false;
   id: number | undefined;
   noticia: New = new New();
+  selectedFile: File | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,7 +23,14 @@ export class NewsDetailComponent {
     private router: Router,
     private newsService: NewsService,
     private datePipe: DatePipe
-  ) {}
+  ) {
+    this.newsForm = this.formBuilder.group({
+      titulo: ['', Validators.required],
+      contenido: ['', Validators.required],
+      fecha: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+      imagen: [''],
+    });
+  }
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -34,15 +42,7 @@ export class NewsDetailComponent {
         titulo: this.noticia.titulo,
         fecha: this.datePipe.transform(this.noticia.fecha, 'yyyy-MM-dd'),
         contenido: this.noticia.contenido,
-        imagen: this.noticia.imagen,
       });
-    });
-
-    this.newsForm = this.formBuilder.group({
-      titulo: ['', Validators.required],
-      contenido: ['', Validators.required],
-      fecha: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
-      imagen: [''],
     });
 
     this.newsService.getNewsById(id).subscribe(
@@ -59,16 +59,26 @@ export class NewsDetailComponent {
     return this.newsForm.controls;
   }
 
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
   onSubmit() {
     this.submitted = true;
 
     if (this.newsForm.invalid) {
       return;
     }
+    const news: New = {
+      titulo: this.f.titulo.value,
+      fecha: this.f.fecha.value,
+      contenido: this.f.contenido.value,
+      imagen: this.f.imagen.value,
+    };
 
     if (this.noticia.idnoticia !== undefined) {
       this.newsService
-        .updateNews(this.noticia.idnoticia, this.newsForm.value)
+        .updateNews(this.noticia.idnoticia, news, this.selectedFile)
         .subscribe(() => {
           // success message
           this.router.navigate(['/admin/news']);

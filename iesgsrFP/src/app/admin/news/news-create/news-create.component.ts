@@ -13,6 +13,7 @@ import { DatePipe } from '@angular/common';
 export class NewsCreateComponent {
   newsForm: FormGroup;
   submitted = false;
+  selectedFile: File | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,9 +34,13 @@ export class NewsCreateComponent {
   get f() {
     return this.newsForm.controls;
   }
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
 
   onSubmit() {
     this.submitted = true;
+
     if (this.newsForm.invalid) {
       return;
     }
@@ -47,7 +52,7 @@ export class NewsCreateComponent {
       imagen: this.f.imagen.value,
     };
 
-    this.newsService.createNews(news).subscribe(() => {
+    this.newsService.createNews(news, this.selectedFile).subscribe(() => {
       this.router.navigate(['/admin/news']);
     });
   }

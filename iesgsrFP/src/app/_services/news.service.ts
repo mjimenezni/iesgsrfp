@@ -35,15 +35,43 @@ export class NewsService {
     const url = `${this.apiUrl}/noticias/${id}`;
     return this.http.get<New>(url);
   }
-  createNews(news: New): Observable<New> {
-    return this.http.post<New>(`${this.apiUrl}/noticias`, news);
+  createNews(news: New, imageFile: File | null): Observable<New> {
+    const formData = new FormData();
+    if (imageFile) {
+      formData.append('imagen', imageFile);
+    }
+    if (news.titulo) {
+      formData.append('titulo', news.titulo);
+    }
+    if (news.fecha) {
+      formData.append('fecha', news.fecha.toString());
+    }
+    if (news.contenido) {
+      formData.append('contenido', news.contenido);
+    }
+
+    return this.http.post<any>(`${this.apiUrl}/noticias`, formData);
   }
   deleteNews(id: number): Observable<any> {
     const url = `${this.apiUrl}/noticias/${id}`;
     return this.http.delete(url);
   }
-  updateNews(id: number, news: New): Observable<any> {
+  updateNews(id: number, news: New, imageFile: File | null): Observable<any> {
     const url = `${this.apiUrl}/noticias/${id}`;
-    return this.http.put(url, news);
+    const formData = new FormData();
+    if (imageFile) {
+      formData.append('imagen', imageFile);
+    }
+    if (news.titulo) {
+      formData.append('titulo', news.titulo);
+    }
+    if (news.fecha) {
+      formData.append('fecha', news.fecha.toString());
+    }
+    if (news.contenido) {
+      formData.append('contenido', news.contenido);
+    }
+
+    return this.http.put(url, formData);
   }
 }

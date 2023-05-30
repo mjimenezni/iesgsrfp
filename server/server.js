@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 
+
 //bodyParser toma los datos del cuerpo de la solicitud HTTP y los convierte en un objeto JavaScript 
 //accesible desde la solicitud.
 const bodyParser = require('body-parser');

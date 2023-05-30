@@ -43,7 +43,7 @@ export class NewsListComponent {
     });
   }
 
-  createNew() {
+  /*createNew() {
     this.newsService.createNews(this.nuevaNoticia).subscribe(
       () => {
         this.nuevaNoticia = new New(); // limpiar los valores del formulario
@@ -52,7 +52,7 @@ export class NewsListComponent {
       (error) => console.error(error)
     );
   }
-
+*/
   deleteNew(id: number) {
     this.newsService.deleteNews(id).subscribe(
       () => {

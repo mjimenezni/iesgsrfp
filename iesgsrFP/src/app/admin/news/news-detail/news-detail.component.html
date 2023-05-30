@@ -40,9 +40,16 @@
         <label for="imagen" class="form-label">Imagen</label>
         <input
           type="file"
-          class="form-control"
+          class="form-control mb-3"
           id="imagen"
           formControlName="imagen"
+          (change)="onFileSelected($event)"
+        />
+        <p>Imagen actual:</p>
+        <img
+          [src]="noticia.imagen"
+          class="img-fluid rounded-5 img-thumbnail"
+          style="width: 50%"
         />
       </div>
 
