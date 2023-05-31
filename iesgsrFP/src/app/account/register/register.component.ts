@@ -18,6 +18,7 @@ import { User } from 'src/app/_models/user';
 })
 export class RegisterComponent {
   registerForm!: FormGroup;
+  passwordsDoNotMatch: boolean = false;
   error: string = '';
   submitted = false;
 
@@ -27,16 +28,13 @@ export class RegisterComponent {
     private router: Router,
     private accountService: AccountService
   ) {
-    this.registerForm = this.formBuilder.group(
-      {
-        email: ['', Validators.required],
-        password: ['', [Validators.required]],
-        confirmPassword: ['', [Validators.required]],
-        nombre: [''],
-        ape1: [''],
-      },
-      { validator: this.passwordsMatch }
-    );
+    this.registerForm = this.formBuilder.group({
+      email: ['', Validators.required],
+      password: [null, [Validators.required]],
+      confirmPassword: [null, [Validators.required]],
+      nombre: [''],
+      ape1: [''],
+    });
   }
 
   // convenience getter for easy access to form fields
@@ -44,29 +42,18 @@ export class RegisterComponent {
     return this.registerForm.controls;
   }
 
-  passwordsMatch(control: AbstractControl): { [key: string]: boolean } | null {
-    const password = control.get('password')?.value;
-    const confirmPassword = control.get('confirmPassword')?.value;
-
-    if (password && confirmPassword && password !== confirmPassword) {
-      console.log('Las contraseñas no son son iguales');
-      return { passwordMismatch: true };
-    }
-    // Verificar que la validación de contraseñas esté activa
-    if (
-      confirmPassword &&
-      (confirmPassword.dirty || confirmPassword.touched) &&
-      !confirmPassword.errors?.passwordMismatch
-    ) {
-      confirmPassword.setErrors({ passwordMismatch: true });
-    }
-    return null;
-  }
-
   onSubmit() {
     this.submitted = true;
+
     // stop here if form is invalid
     if (this.registerForm.invalid) {
+      return;
+    }
+
+    console.log(this.f.password);
+    // Realiza la lógica para cambiar la contraseña
+    if (this.f.password.value !== this.f.confirmPassword.value) {
+      this.passwordsDoNotMatch = true;
       return;
     }
 
@@ -85,9 +72,11 @@ export class RegisterComponent {
         this.router.navigate(['/login']);
       },
       (error) => {
+        console.log(error.error);
         // El registro ha fallado, mostrar un mensaje de error al usuario
         this.error = error.error.message;
       }
     );
+    this.passwordsDoNotMatch = false;
   }
 }

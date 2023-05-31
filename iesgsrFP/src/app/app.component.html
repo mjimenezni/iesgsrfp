@@ -110,6 +110,18 @@
               >Cambiar contraseña</a
             >
           </li>
+          <hr *ngIf="accountService.isAdminUser | async" />
+          <li>
+            <a
+              *ngIf="accountService.isAdminUser | async"
+              class="dropdown-item"
+              href="#"
+              routerLink="/admin"
+              >Panel de administración</a
+            >
+          </li>
+
+          <hr />
           <li>
             <a class="dropdown-item" href="#" (click)="onLogout()"
               >Cerrar sesión</a

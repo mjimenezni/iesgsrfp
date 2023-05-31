@@ -55,6 +55,9 @@
         <div *ngIf="submitted && f.isAdmin.errors" class="invalid-feedback">
           Este campo es requerido
         </div>
+        <div *ngIf="error !== ''" class="alert alert-danger">
+          Error en el registro. {{ error }}
+        </div>
       </div>
 
       <button type="submit" class="btn btn-primary">Crear usuario</button>

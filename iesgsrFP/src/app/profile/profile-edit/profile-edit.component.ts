@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 })
 export class ProfileEditComponent implements OnInit {
   editForm: FormGroup;
+  submitted = false;
   currentUser: any;
   datosUser: any;
   avatarOptions: string[] = [
@@ -34,6 +35,7 @@ export class ProfileEditComponent implements OnInit {
       nombre: ['', Validators.required],
       ape1: [''],
       ape2: [''],
+      email: [''],
       telefono: [''],
       fecha_nac: [''],
       avatar: [null],
@@ -71,8 +73,13 @@ export class ProfileEditComponent implements OnInit {
       );
     }
   }
+  get f() {
+    return this.editForm.controls;
+  }
 
   onSubmit(): void {
+    this.submitted = true;
+    console.log(this.editForm);
     if (this.editForm.invalid) {
       return;
     }

@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class UsersCreateComponent {
   usersForm: FormGroup;
   submitted = false;
+  error: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,7 +23,7 @@ export class UsersCreateComponent {
       email: ['', Validators.required],
       nombre: ['', Validators.required],
       password: ['', Validators.required],
-      isAdmin: ['', Validators.required],
+      isAdmin: [false, Validators.required],
     });
   }
   get f() {
@@ -42,8 +43,14 @@ export class UsersCreateComponent {
       isAdmin: this.f.isAdmin.value,
     };
 
-    this.usersService.createUser(user).subscribe(() => {
-      this.router.navigate(['/admin/users']);
-    });
+    this.usersService.createUser(user).subscribe(
+      () => {
+        this.router.navigate(['/admin/users']);
+      },
+      (error) => {
+        // El registro ha fallado, mostrar un mensaje de error al usuario
+        this.error = error.error.message;
+      }
+    );
   }
 }

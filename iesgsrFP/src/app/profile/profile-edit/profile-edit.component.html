@@ -34,6 +34,12 @@
                         formControlName="nombre"
                         required
                       />
+                      <div
+                        *ngIf="submitted && f.nombre.errors"
+                        class="invalid-feedback"
+                      >
+                        Hay un error en este campo
+                      </div>
                       <label for="ape1" class="form-label mt-3"
                         >Apellido1</label
                       >
@@ -42,8 +48,13 @@
                         id="ape1"
                         class="form-control"
                         formControlName="ape1"
-                        required
                       />
+                      <div
+                        *ngIf="submitted && f.ape1.errors"
+                        class="invalid-feedback"
+                      >
+                        Hay un error en este campo
+                      </div>
                       <label for="ape2" class="form-label mt-3"
                         >Apellido2</label
                       >
@@ -52,7 +63,6 @@
                         id="ape2"
                         class="form-control"
                         formControlName="ape2"
-                        required
                       />
                       <label for="telefono" class="form-label mt-3"
                         >Teléfono</label
@@ -62,7 +72,6 @@
                         id="telefono"
                         class="form-control"
                         formControlName="telefono"
-                        required
                       />
                       <label for="fecha_nac" class="form-label mt-3"
                         >Fecha nacimiento</label
@@ -72,7 +81,6 @@
                         id="fecha_nac"
                         class="form-control"
                         formControlName="fecha_nac"
-                        required
                       />
                       <label for="avatar" class="form-label mt-3">Avatar</label>
                       <div class="avatar-options">
