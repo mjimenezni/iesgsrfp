@@ -37,6 +37,7 @@ export class ProfileEditComponent implements OnInit {
       telefono: [''],
       fecha_nac: [''],
       avatar: [null],
+      isAdmin: [''],
     });
   }
 
@@ -61,6 +62,7 @@ export class ProfileEditComponent implements OnInit {
             telefono: user.telefono,
             fecha_nac: this.datePipe.transform(user.fecha_nac, 'yyyy-MM-dd'),
             avatar: user.avatar,
+            isAdmin: user.isAdmin,
           });
         },
         (error) => {
@@ -75,9 +77,14 @@ export class ProfileEditComponent implements OnInit {
       return;
     }
 
-    // Obtén los valores actualizados del formulario
+    // Obtiene los valores actualizados del formulario
     const updatedUserData = this.editForm.value;
     updatedUserData.avatar = this.selectedAvatar;
+
+    // Verifica si no se ha seleccionado una nueva imagen de avatar
+    if (!updatedUserData.avatar) {
+      updatedUserData.avatar = this.currentUser.avatar;
+    }
 
     // Realiza la llamada al servicio para actualizar los datos del usuario
     this.userService
@@ -92,9 +99,7 @@ export class ProfileEditComponent implements OnInit {
               // Actualiza el avatar en el servicio AccountService
               this.accountService
                 .setAvatar(this.datosUser.avatar)
-                .subscribe(() => {
-                  console.log(this.currentUser.avatar);
-                });
+                .subscribe(() => {});
 
               // Establece el token y actualiza el estado de inicio de sesión y isAdmin
               this.accountService.setToken(response.token);

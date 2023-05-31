@@ -51,7 +51,6 @@ export class NewsCreateComponent {
       contenido: this.f.contenido.value,
       imagen: this.f.imagen.value,
     };
-
     this.newsService.createNews(news, this.selectedFile).subscribe(() => {
       this.router.navigate(['/admin/news']);
     });

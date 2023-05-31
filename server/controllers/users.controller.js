@@ -106,9 +106,10 @@ exports.editUser = async (req, res) => {
     if (results.affectedRows === 0) {
       return res.status(404).send(`Usuario con id ${id} no encontrado`);
     }
+    
      // Generamos un nuevo token JWT con la información del usuario (idusuario e isAdmin)
     const token = jwt.sign(
-      { idusuario: id, isAdmin:isAdmin, nommbre: nombre, avatar:avatar },
+      { idusuario: id, isAdmin: isAdmin, nombre: nombre, avatar:avatar },
       'secreto', // Clave secreta para cifrar el token
       { expiresIn: '1h' } // El token expira en 1 hora
     );

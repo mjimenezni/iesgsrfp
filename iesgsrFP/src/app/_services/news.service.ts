@@ -40,6 +40,7 @@ export class NewsService {
     if (imageFile) {
       formData.append('imagen', imageFile);
     }
+
     if (news.titulo) {
       formData.append('titulo', news.titulo);
     }

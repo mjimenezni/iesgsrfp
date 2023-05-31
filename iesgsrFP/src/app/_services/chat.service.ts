@@ -28,12 +28,10 @@ export class ChatService {
 
   public connect(): void {
     this.socket = io(environment.apiUrl);
-    console.log('estoy conectado');
   }
 
   public disconnect(): void {
     this.socket.disconnect();
-    console.log('me he desconectado');
   }
 
   public sendMessageToUser(message: any): void {

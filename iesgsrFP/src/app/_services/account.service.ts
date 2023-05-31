@@ -40,6 +40,7 @@ export class AccountService {
       nombre: string;
       avatar: string;
     };
+
     localStorage.setItem('token', token); // almacena el token en el almacenamiento local
 
     this.loggedIn.next(true); // actualiza el estado de inicio de sesión a verdadero
@@ -59,6 +60,7 @@ export class AccountService {
   public setAvatar(avatar: string): Observable<any> {
     const updatedToken = this.decodedToken.value;
     updatedToken.avatar = avatar;
+
     this.decodedToken.next(updatedToken);
     this.avatarChanged.next(avatar);
 
