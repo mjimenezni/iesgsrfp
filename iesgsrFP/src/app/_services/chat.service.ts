@@ -26,8 +26,11 @@ export class ChatService {
     this.selectedUserSource.next(user);
   }
 
-  public connect(): void {
-    this.socket = io(environment.apiUrl);
+  public connect(idusuario: number): void {
+    this.socket = io(environment.apiUrl, { auth: { token: idusuario } });
+    // Unirse a un canal específico
+    const channel = idusuario;
+    this.socket.emit('join', channel);
   }
 
   public disconnect(): void {
@@ -48,7 +51,6 @@ export class ChatService {
 
   public getMessages(idorigen: number, iddestino: number): Observable<any> {
     return new Observable<any>((observer) => {
-      console.log('idorigen:', idorigen, 'iddestino:', iddestino);
       this.socket.emit('get messages', { idorigen, iddestino });
       this.socket.on('messages', (messages: any[]) => {
         observer.next(messages);

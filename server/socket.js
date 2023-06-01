@@ -17,7 +17,9 @@ function handleSockets(server) {
   // manejar conexiones de sockets entrantes
   io.on('connection', (socket) => {
     console.log('Usuario conectado:', socket.id);
-
+    const token = socket.handshake.auth.token;
+    socket.join(token);
+  
     socket.on('private message', (data) => {
       console.log(`message: ${data.mensaje}, fromUserId: ${data.idorigen}, toUserId: ${data.iddestino}`);
       // Insertar el mensaje en la base de datos
@@ -29,9 +31,9 @@ function handleSockets(server) {
       console.error(`Error al almacenar el mensaje en la base de datos: ${error}`);
     });
     // Emitir el mensaje solo al usuario seleccionado
-      io.to(data.iddestino).emit('private message', { message:data.mensaje, idorigen:data.idorigen });
+      io.to(data.iddestino).emit('private message', { mensaje:data.mensaje, idorigen:data.idorigen, iddestino:data.iddestino, fechahora:new Date() });
+      //console.log("usuario al que envío ", data.iddestino)
       
-      //io.emit('private message', { message:data.mensaje, idorigen:data.iddestino }) 
     });
 
  // desconectar el socket cuando el cliente se desconecta
@@ -47,7 +49,7 @@ function handleSockets(server) {
             .then((result) => {
                 const messages = result[0];
                 io.to(socket.id).emit('messages', messages);
-                console.log(messages)
+                //console.log(messages)
       })
       .catch((error) => {
         console.error(`Error al recuperar los mensajes de la base de datos: ${error}`);

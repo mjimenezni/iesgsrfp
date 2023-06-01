@@ -32,7 +32,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.accountService.currentUser.subscribe((currentUser) => {
       this.currentUser = currentUser;
     });
-    this.chatService.connect();
+    this.chatService.connect(this.currentUser.idusuario);
   }
   ngOnDestroy(): void {
     this.chatService.disconnect();
