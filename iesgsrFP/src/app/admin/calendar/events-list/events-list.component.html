@@ -1,36 +1,32 @@
 <section>
   <div class="container py-2">
-    <h2>Gestión de Usuarios</h2>
-    <button type="button" class="btn" routerLink="/admin/users/create">
-      <fa-icon [icon]="faUserPlus"></fa-icon> Añadir usuario
+    <h2>Gestión de Eventos del calendario</h2>
+    <button type="button" class="btn" routerLink="/admin/calendar/create">
+      <fa-icon [icon]="faUserPlus"></fa-icon> Añadir evento
     </button>
     <table class="table align-middle mb-0 bg-white">
       <thead class="bg-light">
         <tr>
-          <th>Email</th>
-          <th>Nombre</th>
-          <th>Administrador</th>
+          <th>Evento</th>
           <th>Grupo</th>
+          <th>Fecha</th>
           <th>Acciones</th>
         </tr>
       </thead>
-      <tbody *ngIf="usuarios && usuarios.length > 0">
-        <tr *ngFor="let usuario of usuarios">
+      <tbody *ngIf="eventos && eventos.length > 0">
+        <tr *ngFor="let evento of eventos">
           <td>
             <div class="d-flex align-items-center">
               <div class="ms-3">
-                <p class="fw-bold mb-1">{{ usuario.email }}</p>
+                <p class="fw-bold mb-1">{{ evento.evento }}</p>
               </div>
             </div>
           </td>
           <td>
-            <p class="text-muted mb-0">{{ usuario.nombre }}</p>
+            <p class="text-muted mb-0">{{ evento.idgrupo }}</p>
           </td>
           <td>
-            <p class="text-muted mb-0">{{ usuario.isAdmin ? "Sí" : "No" }}</p>
-          </td>
-          <td>
-            <p class="text-muted mb-0">{{ usuario.grupo?.nombre }}</p>
+            <p class="text-muted mb-0">{{ evento.fecha }}</p>
           </td>
           <!--<td>
             <span class="badge badge-success rounded-pill d-inline"
@@ -42,14 +38,14 @@
             <button
               type="button"
               class="btn btn-sm"
-              (click)="usuario.idusuario && editUser(usuario.idusuario)"
+              (click)="evento.idevento && editEvent(evento.idevento)"
             >
               <fa-icon [icon]="faPencil"></fa-icon>
             </button>
             <button
               type="button"
               class="btn btn-sm"
-              (click)="usuario.idusuario && confirmDelete(usuario.idusuario)"
+              (click)="evento.idevento && confirmDelete(evento.idevento)"
             >
               <fa-icon [icon]="faTrash"></fa-icon>
             </button>

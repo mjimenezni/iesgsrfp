@@ -1,7 +1,12 @@
 .chat-container {
-    height: 400px;
+    height: 50vh;
     /* Establece la altura deseada para el contenedor del chat */
     overflow-y:scroll;
     /* Habilita el scroll vertical cuando el contenido excede la altura */
+    scroll-snap-type: y mandatory;
+}
 
+.chat-section {
+   scroll-snap-align: end;
+   
 }

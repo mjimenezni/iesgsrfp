@@ -47,13 +47,13 @@ exports.createUser = async (req, res) => {
     if (!req.body) {
         return res.status(400).send('No se recibieron los datos del usuario');
       }
-    const {  email, nombre, password, isAdmin } = req.body || {};
+    const {  email, nombre, password, isAdmin, idgrupo } = req.body || {};
     
     //Se establece avatar por defecto
     const avatar = 'assets/img/avatar/ava1-bg.webp';
       
-    const [results] = await connection.execute('INSERT INTO usuarios (nombre, email, password, isAdmin, avatar) VALUES (?, ?, ?, ?,?)', [nombre, email, password,isAdmin,avatar]);
-   res.json({ idusuario: results.insertId, email, nombre, password, isAdmin,avatar});
+    const [results] = await connection.execute('INSERT INTO usuarios (nombre, email, password, isAdmin, avatar,idgrupo) VALUES (?, ?, ?, ?,?,?)', [nombre, email, password,isAdmin,avatar,idgrupo]);
+   res.json({ idusuario: results.insertId, email, nombre, password, isAdmin,avatar,idgrupo});
   } catch (error) {
     console.error(error);
     res.status(500).send(error);
@@ -66,7 +66,7 @@ exports.createUser = async (req, res) => {
 
 exports.editUser = async (req, res) => {
   const id = req.params.idusuario;
-  const { nombre, email, isAdmin, ape1,ape2, telefono, fecha_nac, avatar } = req.body;
+  const { nombre, email, isAdmin, ape1,ape2, telefono, fecha_nac, avatar,idgrupo } = req.body;
   let connection;
   try {
     connection = await dbconnection.getConnection();
@@ -102,6 +102,10 @@ exports.editUser = async (req, res) => {
       updateQuery += ', avatar = ?';
       updateValues.push(avatar);
     }
+      if (idgrupo !== undefined) {
+      updateQuery += ', idgrupo = ?';
+      updateValues.push(idgrupo);
+    }
 
     updateQuery += ' WHERE idusuario = ?';
     updateValues.push(id);
@@ -112,7 +116,7 @@ exports.editUser = async (req, res) => {
     
      // Generamos un nuevo token JWT con la información del usuario (idusuario e isAdmin)
     const token = jwt.sign(
-      { idusuario: id, isAdmin: isAdmin, nombre: nombre, avatar:avatar },
+      { idusuario: id, isAdmin: isAdmin, nombre: nombre, avatar:avatar, idgrupo:idgrupo },
       'secreto', // Clave secreta para cifrar el token
       { expiresIn: '1h' } // El token expira en 1 hora
     );

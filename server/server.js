@@ -23,6 +23,8 @@ const usersRouter = require('./routes/users')
 const registerRouter = require('./routes/register')
 const chatRouter =require('./routes/chat');
 const notesRouter=require('./routes/notes');
+const groupsRouter=require('./routes/groups');
+const calendarRouter=require('./routes/calendar')
 // Middleware para validar el token en las rutas protegidas
 //app.use('/chat', verificarToken, chatRouter);
 
@@ -33,6 +35,8 @@ app.use('/users', usersRouter);
 app.use('/register', registerRouter);
 app.use('/messages', chatRouter);
 app.use('/notes', notesRouter);
+app.use('/groups', groupsRouter);
+app.use('/events', calendarRouter);
 
 //evitar error al intentar cargar favicon.ico
 app.use('/favicon.ico', (req, res) => {

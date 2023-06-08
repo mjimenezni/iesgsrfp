@@ -18,15 +18,6 @@ export class NotesService {
   getAllNotes() {
     return this.http.get<Note[]>(`${this.apiUrl}/notes`).pipe(
       map((notes) => {
-        notes.forEach((note) => {
-          if (note.fecha) {
-            //Formatear la la fecha
-            /*noticia.fecha = this.datePipe.transform(
-              noticia.fecha,
-              'yyyy-MM-dd'
-            );*/
-          }
-        });
         this.notes = notes;
         return notes;
       })

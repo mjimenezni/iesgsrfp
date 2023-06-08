@@ -1,4 +1,6 @@
-﻿export class User {
+﻿import { Group } from './group';
+
+export class User {
   idusuario?: number;
   email?: string;
   password?: string;
@@ -12,4 +14,5 @@
   direccion?: string;
   email2?: string;
   avatar?: string;
+  grupo?: Group; // Campo opcional para almacenar el grupo completo
 }

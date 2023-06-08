@@ -17,15 +17,6 @@ export class NewsService {
   getAllNews() {
     return this.http.get<New[]>(`${this.apiUrl}/noticias`).pipe(
       map((noticias) => {
-        noticias.forEach((noticia) => {
-          if (noticia.fecha) {
-            //Formatear la la fecha
-            /*noticia.fecha = this.datePipe.transform(
-              noticia.fecha,
-              'yyyy-MM-dd'
-            );*/
-          }
-        });
         this.noticias = noticias;
         return noticias;
       })

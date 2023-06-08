@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from 'src/app/_services/users.service';
 import { User } from 'src/app/_models/user';
+import { Group } from 'src/app/_models/group';
 import { Router } from '@angular/router';
 import {
   faTrash,
@@ -16,7 +17,7 @@ export class UsersListComponent {
   faTrash = faTrash;
   faPencil = faPencil;
   faUserPlus = faUserPlus;
-  usuarios: User[] | undefined;
+  usuarios!: User[];
   nuevoUsuario: User = new User();
   deleteConfirmation = false;
 
@@ -29,7 +30,21 @@ export class UsersListComponent {
   getUsers() {
     this.userService.getAllUsers().subscribe((usuarios) => {
       this.usuarios = usuarios;
+      this.loadGroups();
     });
+  }
+  loadGroups() {
+    if (this.usuarios) {
+      // Iterar sobre cada usuario y obtener el grupo completo
+      // Obtener el grupo para cada usuario
+      this.usuarios.forEach((usuario) => {
+        if (usuario.idgrupo) {
+          this.userService.getGroupById(usuario.idgrupo).subscribe((grupo) => {
+            usuario.grupo = grupo;
+          });
+        }
+      });
+    }
   }
 
   createUser() {

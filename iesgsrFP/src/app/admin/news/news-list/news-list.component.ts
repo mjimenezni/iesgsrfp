@@ -43,16 +43,6 @@ export class NewsListComponent {
     });
   }
 
-  /*createNew() {
-    this.newsService.createNews(this.nuevaNoticia).subscribe(
-      () => {
-        this.nuevaNoticia = new New(); // limpiar los valores del formulario
-        this.getNews(); // obtener las noticias actualizadas después de la creación
-      },
-      (error) => console.error(error)
-    );
-  }
-*/
   deleteNew(id: number) {
     this.newsService.deleteNews(id).subscribe(
       () => {

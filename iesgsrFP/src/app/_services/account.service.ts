@@ -39,6 +39,7 @@ export class AccountService {
       isAdmin: boolean;
       nombre: string;
       avatar: string;
+      idgrupo: number;
     };
 
     localStorage.setItem('token', token); // almacena el token en el almacenamiento local

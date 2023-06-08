@@ -35,4 +35,12 @@ export class UserService {
   deleteUser(userId: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/users/${userId}`);
   }
+
+  getAllGroups(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/groups`);
+  }
+
+  getGroupById(groupId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/groups/${groupId}`);
+  }
 }

@@ -9,76 +9,85 @@
 <div class="pt-3 pe-3" *ngIf="selectedUser">
   <h2 class="text-center mb-5">{{ selectedUser.nombre }}</h2>
   <div class="chat-container" id="chatContainer">
-    <div *ngFor="let message of messages">
-      <ng-container
-        *ngIf="message.idorigen == currentUser.idusuario; else receivedMessage"
+    <div class="chat-section">
+      <div *ngFor="let message of messages">
+        <ng-container
+          *ngIf="
+            message.idorigen == currentUser.idusuario;
+            else receivedMessage
+          "
+        >
+          <!-- Mensaje enviado por el usuario actual -->
+          <div class="d-flex flex-row justify-content-start">
+            <img
+              [src]="currentUser.avatar"
+              alt="Avatar del usuario actual"
+              style="width: 45px; height: 100%"
+            />
+            <div>
+              <p
+                class="small p-2 ms-3 mb-1 rounded-3"
+                style="background-color: #f5f6f7"
+              >
+                {{ message.mensaje }}
+              </p>
+              <p class="small ms-3 mb-3 rounded-3 text-muted float-end">
+                {{ formatDateTime(message.fechahora) }}
+              </p>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-template #receivedMessage>
+          <!-- Mensaje recibido por el usuario actual -->
+          <div class="d-flex flex-row justify-content-end">
+            <div>
+              <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
+                {{ message.mensaje }}
+              </p>
+              <p class="small me-3 mb-3 rounded-3 text-muted">
+                {{ formatDateTime(message.fechahora) }}
+              </p>
+            </div>
+            <img
+              [src]="selectedUser.avatar"
+              alt="Avatar del remitente del mensaje"
+              style="width: 45px; height: 100%"
+            />
+          </div>
+        </ng-template>
+      </div>
+
+      <div
+        class="text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-5"
       >
-        <!-- Mensaje enviado por el usuario actual -->
-        <div class="d-flex flex-row justify-content-start">
-          <img
-            [src]="currentUser.avatar"
-            alt="Avatar del usuario actual"
-            style="width: 45px; height: 100%"
-          />
-          <div>
-            <p
-              class="small p-2 ms-3 mb-1 rounded-3"
-              style="background-color: #f5f6f7"
-            >
-              {{ message.mensaje }}
-            </p>
-            <p class="small ms-3 mb-3 rounded-3 text-muted float-end">
-              {{ formatDateTime(message.fechahora) }}
-            </p>
-          </div>
-        </div>
-      </ng-container>
-
-      <ng-template #receivedMessage>
-        <!-- Mensaje recibido por el usuario actual -->
-        <div class="d-flex flex-row justify-content-end">
-          <div>
-            <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
-              {{ message.mensaje }}
-            </p>
-            <p class="small me-3 mb-3 rounded-3 text-muted">
-              {{ formatDateTime(message.fechahora) }}
-            </p>
-          </div>
-          <img
-            [src]="selectedUser.avatar"
-            alt="Avatar del remitente del mensaje"
-            style="width: 45px; height: 100%"
-          />
-        </div>
-      </ng-template>
-    </div>
-
-    <div
-      class="text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-5"
-    >
-      <img
-        [src]="currentUser.avatar"
-        alt="avatar 3"
-        style="width: 40px; height: 100%"
-      />
-      <input
-        type="text"
-        class="form-control form-control-lg"
-        id="msnSend"
-        placeholder="Escribe tu mensaje"
-        [(ngModel)]="messageInput"
-        (keydown.enter)="sendMessage()"
-      />
-      <!--<a class="ms-1 text-muted" href="#!"
+        <img
+          [src]="currentUser.avatar"
+          alt="avatar 3"
+          style="width: 40px; height: 100%"
+        />
+        <input
+          type="text"
+          class="form-control form-control-lg"
+          id="msnSend"
+          placeholder="Escribe tu mensaje"
+          [(ngModel)]="messageInput"
+          (keydown.enter)="sendMessage()"
+        />
+        <!--<a class="ms-1 text-muted" href="#!"
                     ><fa-icon [icon]="faPaperclip"></fa-icon
                   ></a>
                   <a class="ms-3 text-muted" href="#!"
                     ><fa-icon [icon]="faSmile"></fa-icon
                   ></a>-->
-      <button type="submit" class="btn btn-primary m-2" (click)="sendMessage()">
-        <fa-icon [icon]="faPaperplane"></fa-icon>
-      </button>
+        <button
+          type="submit"
+          class="btn btn-primary m-2"
+          (click)="sendMessage()"
+        >
+          <fa-icon [icon]="faPaperplane"></fa-icon>
+        </button>
+      </div>
     </div>
   </div>
 </div>

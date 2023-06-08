@@ -1,8 +1,14 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import { UserService } from 'src/app/_services/users.service';
 import { User } from 'src/app/_models/user';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Group } from 'src/app/_models/group';
 
 @Component({
   selector: 'app-users-detail',
@@ -14,6 +20,7 @@ export class UsersDetailComponent {
   submitted = false;
   id: number | undefined;
   usuario: User = new User();
+  grupos: Group[] | undefined;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -32,13 +39,19 @@ export class UsersDetailComponent {
         nombre: this.usuario.nombre,
         email: this.usuario.email,
         isAdmin: this.usuario.isAdmin,
+        idgrupo: this.usuario.idgrupo,
       });
+    });
+
+    this.userService.getAllGroups().subscribe((groups) => {
+      this.grupos = groups;
     });
 
     this.usersForm = this.formBuilder.group({
       nombre: ['', Validators.required],
       email: ['', Validators.required],
       isAdmin: ['', Validators.required],
+      idgrupo: new FormControl('', Validators.required),
     });
 
     this.userService.getUserById(id).subscribe(

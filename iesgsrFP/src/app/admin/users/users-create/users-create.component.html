@@ -45,7 +45,7 @@
         </div>
       </div>
       <div class="mb-3">
-        <label for="isAdmin" class="form-label">Es administrador:</label>
+        <label for="isAdmin" class="form-label me-3">Es administrador:</label>
         <input
           type="checkbox"
           class="form-check-input"
@@ -58,6 +58,21 @@
         <div *ngIf="error !== ''" class="alert alert-danger">
           Error en el registro. {{ error }}
         </div>
+      </div>
+      <div class="mb-3">
+        <label for="idgrupo" class="form-label me-3">Grupo:</label>
+        <select formControlName="idgrupo" name="idgrupo" class="ml-2">
+          <option *ngFor="let grupo of grupos" [value]="grupo.idgrupo">
+            {{ grupo.nombre }}
+          </option>
+        </select>
+        <div *ngIf="submitted && f.idgrupo.errors" class="invalid-feedback">
+          Este campo es requerido
+        </div>
+        <p>
+          *Todos los usuarios pertenecen al grupo "general" por defecto.
+          Selecciona otro grupo
+        </p>
       </div>
 
       <button type="submit" class="btn btn-primary">Crear usuario</button>

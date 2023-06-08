@@ -16,7 +16,7 @@ exports.loginUser = async (req, res) => {
 
         // Realizamos la consulta a la base de datos para obtener el usuario con el email especificado
     const [rows] = await connection.execute(
-      'SELECT idusuario, password, nombre, isAdmin, avatar FROM usuarios WHERE email = ?',
+      'SELECT idusuario, password, nombre, isAdmin, avatar, idgrupo FROM usuarios WHERE email = ?',
       [email]
     );
 
@@ -41,7 +41,7 @@ exports.loginUser = async (req, res) => {
 
     // Generamos un token JWT con la información del usuario (idusuario e isAdmin)
     const token = jwt.sign(
-      { idusuario: user.idusuario, isAdmin: user.isAdmin, nombre: user.nombre, avatar:user.avatar },
+      { idusuario: user.idusuario, isAdmin: user.isAdmin, nombre: user.nombre, avatar:user.avatar, idgrupo:user.idgrupo },
       'secreto', // Clave secreta para cifrar el token
       { expiresIn: '1h' } // El token expira en 1 hora
     );

@@ -1,0 +1,55 @@
+<section>
+  <div class="container py-2">
+    <h2>Crear nuevo evento</h2>
+
+    <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="evento" class="form-label">Evento</label>
+        <input
+          type="text"
+          class="form-control"
+          id="evento"
+          formControlName="evento"
+          [ngClass]="{ 'is-invalid': submitted && f.evento.errors }"
+        />
+        <div *ngIf="submitted && f.evento.errors" class="invalid-feedback">
+          El evento es requerido
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="fecha" class="form-label">Fecha</label>
+        <input
+          type="date"
+          class="form-control"
+          id="fecha"
+          formControlName="fecha"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="idgrupo" class="form-label me-3">Grupo:</label>
+        <select formControlName="idgrupo" name="idgrupo" class="ml-2">
+          <option *ngFor="let grupo of grupos" [value]="grupo.idgrupo">
+            {{ grupo.nombre }}
+          </option>
+        </select>
+        <div *ngIf="submitted && f.idgrupo.errors" class="invalid-feedback">
+          Este campo es requerido
+        </div>
+        <p>
+          *Los eventos del grupo "general" serán vistos por todos los usuarios
+        </p>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Crear evento</button>
+      <button
+        type="button"
+        class="btn btn-danger ms-2"
+        routerLink="/admin/calendar"
+      >
+        Cancelar
+      </button>
+    </form>
+  </div>
+</section>

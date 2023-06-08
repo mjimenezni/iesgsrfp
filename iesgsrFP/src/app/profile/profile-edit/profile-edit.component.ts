@@ -40,6 +40,7 @@ export class ProfileEditComponent implements OnInit {
       fecha_nac: [''],
       avatar: [null],
       isAdmin: [''],
+      idgrupo: [''],
     });
   }
 
@@ -65,6 +66,7 @@ export class ProfileEditComponent implements OnInit {
             fecha_nac: this.datePipe.transform(user.fecha_nac, 'yyyy-MM-dd'),
             avatar: user.avatar,
             isAdmin: user.isAdmin,
+            idgrupo: user.idgrupo,
           });
         },
         (error) => {
