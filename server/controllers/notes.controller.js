@@ -52,7 +52,7 @@ exports.getGroupNotes = async (req, res) => {
     if (results.length > 0) {
       res.json(results);
     } else {
-      res.status(404).send('Nota no encontrada');
+      res.status(404).send('Grupos de la nota no encontrados');
     }
   } catch (error) {
     console.error(error);
@@ -73,13 +73,30 @@ exports.createNote = async (req, res) => {
     if (!req.body) {
         return res.status(400).send('No se recibieron los datos de la nota');
       }
-    const { titulo, contenido, fecha} = req.body || {};
+    const { titulo, contenido, fecha, grupos} = req.body || {};
     
-    const [results] = await connection.execute(
+    // Inicia una transacción
+    await connection.beginTransaction();
+
+    // Inserta la nota en la tabla notas
+    const [noteResult] = await connection.execute(
       'INSERT INTO notas (contenido, fecha, titulo) VALUES (?, ?, ?)',
       [contenido, fecha, titulo]
     );
-    res.json({ idnota: results.insertId, contenido, titulo });
+
+    const noteId = noteResult.insertId;
+
+    // Inserta las relaciones en la tabla notas_grupo
+    for (const grupoId of grupos) {
+      await connection.execute(
+        'INSERT INTO notas_grupo (idnota, idgrupo) VALUES (?, ?)',
+        [noteId, grupoId]
+      );
+    }
+
+    // Confirma la transacción
+    await connection.commit();
+    res.json({ idnota: noteResult.insertId, contenido, titulo });
     
   } catch (error) {
     console.error(error);
@@ -95,11 +112,31 @@ exports.editNote = async (req, res) => {
   let connection;
   try {
     connection = await dbconnection.getConnection();
-    const { titulo, contenido, fecha } = req.body;
-    await connection.execute(
+    if (!req.body) {
+        return res.status(400).send('No se recibieron los datos de la nota');
+      }
+    const { titulo, contenido, fecha, grupos } = req.body;
+
+     // Inicia una transacción
+    await connection.beginTransaction();
+
+    //Actualiza la nota
+    const [noteResult] = await connection.execute(
       'UPDATE notas SET titulo = ?, contenido = ?, fecha = ? WHERE idnota = ?',
       [titulo, contenido, fecha, req.params.idnota]
     );
+    const noteId = noteResult.insertId;
+
+    // Inserta las relaciones en la tabla notas_grupo
+    for (const grupoId of grupos) {
+      await connection.execute(
+        'INSERT INTO notas_grupo (idnota, idgrupo) VALUES (?, ?)',
+        [noteId, grupoId]
+      );
+    }
+
+    // Confirma la transacción
+    await connection.commit();
  
     res.json({ success: true });
   } catch (error) {
@@ -114,10 +151,20 @@ exports.editNote = async (req, res) => {
 
 exports.deleteNote = async (req, res) => {
   const id = req.params.idnota;
-  console.log(id);
+ 
   let connection;
   try {
     connection = await dbconnection.getConnection();
+
+     // Obtener los grupos asociados a la nota
+    const [notaGrupoResult] = await connection.execute(
+      'SELECT idgrupo FROM notas_grupo WHERE idnota = ?',
+      [id]
+    );
+
+    // Eliminar las asociaciones entre la nota y sus grupos
+    await connection.execute('DELETE FROM notas_grupo WHERE idnota = ?', [id]);
+
 
     // Eliminamos la nota
     const [result] = await connection.execute('DELETE FROM notas WHERE idnota = ?', [id]);

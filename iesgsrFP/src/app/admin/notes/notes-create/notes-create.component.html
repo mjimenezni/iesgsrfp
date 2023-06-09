@@ -36,6 +36,27 @@
         ></textarea>
       </div>
 
+      <div class="mb-3">
+        <label class="form-label">Grupos:</label>
+        <div>
+          <div
+            class="form-check form-check-inline"
+            *ngFor="let grupo of grupos"
+          >
+            <label class="form-check-label">{{ grupo.nombre }} </label>
+            <input
+              class="form-check-input"
+              type="checkbox"
+              [value]="grupo.idgrupo"
+              (change)="onGrupoCheckboxChange($event)"
+            />
+          </div>
+        </div>
+        <div *ngIf="submitted && !gruposSeleccionados" class="text-danger">
+          Debes seleccionar al menos un grupo.
+        </div>
+      </div>
+
       <button type="submit" class="btn btn-primary">Crear nota</button>
       <button
         type="button"
