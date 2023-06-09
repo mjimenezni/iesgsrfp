@@ -21,6 +21,11 @@ export class CalendarService {
     );
   }
 
+  getEventById(id: number): Observable<Event> {
+    const url = `${this.apiUrl}/events/${id}`;
+    return this.http.get<Event>(url);
+  }
+
   getGroupEvents(idgrupo: number): Observable<Event[]> {
     return this.http.get<Event[]>(`${this.apiUrl}/events/groups/${idgrupo}`);
   }

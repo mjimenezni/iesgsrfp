@@ -31,7 +31,9 @@ export class NotesService {
   getGroupNotes(idnota: number): Observable<Group[]> {
     return this.http.get<Group[]>(`${this.apiUrl}/notes/groups/${idnota}`);
   }
-
+  getNotesByGroup(idgrupo: number): Observable<Note[]> {
+    return this.http.get<Note[]>(`${this.apiUrl}/notes/groupUser/${idgrupo}`);
+  }
   updateNote(id: number, note: Note): Observable<any> {
     const url = `${this.apiUrl}/notes/${id}`;
     return this.http.put(url, note);

@@ -12,6 +12,9 @@ router.get('/groups/:idnota', notesController.getGroupNotes);
 // Endpoint GET para obtener una nota por su ID
 router.get('/:idnota',notesController.getNoteById);
 
+// Endpoint GET para obtener las notas de un grupo determinado
+router.get('/groupUser/:idgrupo', notesController.getNotesByGroupId);
+
 // Endpoint POST para agregar una nueva nota
 router.post('/', notesController.createNote);
 

@@ -46,7 +46,7 @@ exports.getGroupNotes = async (req, res) => {
   try {
     connection = await dbconnection.getConnection();
     const [results] = await connection.execute(
-      'SELECT grupos.nombre FROM notas_grupo JOIN grupos ON notas_grupo.idgrupo = grupos.idgrupo WHERE notas_grupo.idnota = ?',
+      'SELECT * FROM notas_grupo JOIN grupos ON notas_grupo.idgrupo = grupos.idgrupo WHERE notas_grupo.idnota = ?',
       [idnota]
     );
     if (results.length > 0) {
@@ -120,18 +120,21 @@ exports.editNote = async (req, res) => {
      // Inicia una transacción
     await connection.beginTransaction();
 
+    // Elimina las relaciones existentes en la tabla notas_grupo
+    await connection.execute('DELETE FROM notas_grupo WHERE idnota = ?', [req.params.idnota]);
+
     //Actualiza la nota
     const [noteResult] = await connection.execute(
       'UPDATE notas SET titulo = ?, contenido = ?, fecha = ? WHERE idnota = ?',
       [titulo, contenido, fecha, req.params.idnota]
     );
-    const noteId = noteResult.insertId;
+    //const noteId = noteResult.insertId;
 
     // Inserta las relaciones en la tabla notas_grupo
     for (const grupoId of grupos) {
       await connection.execute(
         'INSERT INTO notas_grupo (idnota, idgrupo) VALUES (?, ?)',
-        [noteId, grupoId]
+        [req.params.idnota, grupoId]
       );
     }
 
@@ -179,6 +182,39 @@ exports.deleteNote = async (req, res) => {
     console.error(error);
     res.status(500).send('Error al eliminar la nota');
   }finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+};
+
+exports.getNotesByGroupId = async (req, res) => {
+  let connection;
+  try {
+    const groupId = req.params.idgrupo; // Obtener el ID del grupo desde los parámetros de la solicitud
+
+    connection = await dbconnection.getConnection();
+    // Consulta para obtener las notas asociadas al ID de grupo específico
+    const [notesResult] = await connection.execute(
+      'SELECT n.idnota, n.titulo, n.contenido, n.fecha ' +
+      'FROM notas n ' +
+      'INNER JOIN notas_grupo ng ON n.idnota = ng.idnota ' +
+      'WHERE ng.idgrupo = ? OR ng.idgrupo IN (SELECT idgrupo FROM grupos WHERE nombre = "general")',
+      [groupId]
+    );
+
+    const notes = notesResult.map((row) => ({
+      idnota: row.idnota,
+      titulo: row.titulo,
+      contenido: row.contenido,
+      fecha: row.fecha
+    }));
+
+    res.json(notes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al obtener los eventos del grupo');
+  } finally {
     if (connection) {
       connection.release();
     }

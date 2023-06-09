@@ -3,6 +3,7 @@ import { CalendarService } from 'src/app/_services/calendar.service';
 import { Event } from 'src/app/_models/event';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { UserService } from 'src/app/_services/users.service';
 import {
   faTrash,
   faPencil,
@@ -25,7 +26,8 @@ export class EventsListComponent {
   constructor(
     private calendarService: CalendarService,
     private router: Router,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -39,7 +41,22 @@ export class EventsListComponent {
         evento.fecha = this.datePipe.transform(evento.fecha, 'dd/MM/yyyy');
       });
       this.eventos = eventos;
+      this.loadGroups();
     });
+  }
+
+  loadGroups() {
+    if (this.eventos) {
+      // Iterar sobre cada evento y obtener el grupo completo
+      // Obtener el grupo para cada evento
+      this.eventos.forEach((evento) => {
+        if (evento.idgrupo) {
+          this.userService.getGroupById(evento.idgrupo).subscribe((grupo) => {
+            evento.grupo = grupo;
+          });
+        }
+      });
+    }
   }
 
   deleteEvent(id: number) {

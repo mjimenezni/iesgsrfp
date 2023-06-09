@@ -4,6 +4,6 @@ export class Note {
   idnota?: number;
   titulo?: string;
   contenido?: string;
-  fecha?: Date;
+  fecha?: Date | null | string;
   grupos?: Group[]; // Campo opcional para almacenar los grupos completos
 }

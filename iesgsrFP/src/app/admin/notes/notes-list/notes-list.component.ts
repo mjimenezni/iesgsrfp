@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Note } from 'src/app/_models/note';
 import { NotesService } from 'src/app/_services/notes.service';
 import { Router } from '@angular/router';
-import { forkJoin, of } from 'rxjs';
+import { DatePipe } from '@angular/common';
 import {
   faTrash,
   faPencil,
@@ -24,7 +24,11 @@ export class NotesListComponent {
   notasGrupoCargadas: boolean = false;
   deleteConfirmation = false;
 
-  constructor(private notesService: NotesService, private router: Router) {}
+  constructor(
+    private notesService: NotesService,
+    private router: Router,
+    private datePipe: DatePipe
+  ) {}
 
   ngOnInit() {
     this.getNotes();
@@ -32,6 +36,10 @@ export class NotesListComponent {
 
   getNotes() {
     this.notesService.getAllNotes().subscribe((notas) => {
+      // Formatear la fecha de cada noticia
+      notas.forEach((nota) => {
+        nota.fecha = this.datePipe.transform(nota.fecha, 'dd/MM/yyyy');
+      });
       this.notas = notas;
       this.notasGrupoCargadas = false;
       notas.forEach((nota) => {

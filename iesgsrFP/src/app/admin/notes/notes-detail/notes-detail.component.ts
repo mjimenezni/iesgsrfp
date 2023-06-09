@@ -31,6 +31,7 @@ export class NotesDetailComponent {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
+    //Obtener todos los grupos para mostrar en los checkbox
     this.usersService.getAllGroups().subscribe((groups) => {
       this.grupos = groups;
     });
@@ -38,12 +39,22 @@ export class NotesDetailComponent {
     //muestra los valores actuales en el formulario
     this.notesService.getNoteById(id).subscribe((data: Note) => {
       this.nota = data;
+      //Obtener los grupos asociados a la nota actual
+      this.notesService.getGroupNotes(id).subscribe((grupos) => {
+        this.nota.grupos = grupos;
+        this.nota.grupos.forEach((grupo: Group) => {
+          const grupoControl = this.formBuilder.control(true);
+          this.gruposFormArray.push(grupoControl);
+        });
+      });
       this.notesForm.patchValue({
         titulo: this.nota.titulo,
         fecha: this.datePipe.transform(this.nota.fecha, 'yyyy-MM-dd'),
         contenido: this.nota.contenido,
-        grupos: this.nota.grupos,
       });
+
+      if (this.nota && this.nota.grupos) {
+      }
     });
 
     this.notesForm = this.formBuilder.group({
@@ -88,6 +99,13 @@ export class NotesDetailComponent {
       gruposFormArray.removeAt(index);
     }
   }
+  isGrupoSelected(idgrupo: number): boolean {
+    return (
+      !!this.nota &&
+      !!this.nota.grupos &&
+      this.nota.grupos.some((grupo: Group) => grupo.idgrupo === idgrupo)
+    );
+  }
 
   onSubmit() {
     this.submitted = true;
@@ -99,6 +117,9 @@ export class NotesDetailComponent {
     //console.log(this.notesForm);
 
     if (this.nota.idnota !== undefined) {
+      // Actualizar los grupos seleccionados en this.nota.grupos
+      this.nota.grupos = this.gruposFormArray.value;
+      console.log(this.nota.idnota, this.notesForm.value);
       this.notesService
         .updateNote(this.nota.idnota, this.notesForm.value)
         .subscribe(

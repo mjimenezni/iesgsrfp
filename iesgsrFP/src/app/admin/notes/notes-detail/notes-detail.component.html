@@ -49,6 +49,7 @@
               type="checkbox"
               [value]="grupo.idgrupo"
               (change)="onGrupoCheckboxChange($event)"
+              [checked]="isGrupoSelected(grupo.idgrupo)"
             />
           </div>
         </div>

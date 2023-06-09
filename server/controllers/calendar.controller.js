@@ -21,7 +21,7 @@ exports.getEventById = async (req, res) => {
   try {
     connection = await dbconnection.getConnection();
     const [results] = await connection.execute(
-      'SELECT * FROM eventosCalendario WHERE idevento = ?',
+      'SELECT * FROM eventos_calendario WHERE idevento = ?',
       [req.params.idevento]
     );
     if (results.length > 0) {
