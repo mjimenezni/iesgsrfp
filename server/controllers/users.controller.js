@@ -138,6 +138,12 @@ exports.deleteUser = async (req, res) => {
   let connection;
   try {
     connection = await dbconnection.getConnection();
+    
+
+    if (id==1) {
+      return res.status(403).send('No se puede eliminar al usuario administrador');
+    }
+
     const [result] = await connection.execute('DELETE FROM usuarios WHERE idusuario = ?', [id]);
     if (result.affectedRows === 0) {
       return res.status(404).send(`Usuario con id ${id} no encontrado`);

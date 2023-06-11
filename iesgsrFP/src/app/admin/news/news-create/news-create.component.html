@@ -33,7 +33,11 @@
           class="form-control"
           id="contenido"
           formControlName="contenido"
+          [ngClass]="{ 'is-invalid': submitted && f.contenido.errors }"
         ></textarea>
+        <div *ngIf="submitted && f.contenido.errors">
+          <p class="text-danger">El contenido es requerido</p>
+        </div>
       </div>
 
       <div class="mb-3">

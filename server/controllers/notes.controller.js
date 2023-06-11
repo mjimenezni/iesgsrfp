@@ -4,7 +4,7 @@ exports.getAllNotes = async (req, res) => {
   let connection;
   try {
     connection = await dbconnection.getConnection();
-    const [results] = await connection.execute('SELECT * FROM notas');
+    const [results] = await connection.execute('SELECT * FROM notas ORDER BY fecha DESC');
     
     res.json(results);
   } catch (error) {

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { AccountService } from './_services';
+import { Renderer2 } from '@angular/core';
 import 'src/assets/js/bundle.min.js';
 @Component({
   selector: 'app-root',
@@ -13,9 +14,27 @@ export class AppComponent {
   isLoggedIn: boolean = false;
   isAdmin: boolean = false;
   currentUser: any;
-  constructor(public accountService: AccountService) {}
+
+  constructor(
+    public accountService: AccountService,
+    private renderer: Renderer2
+  ) {}
 
   ngOnInit(): void {
+    //Lógica que permita que el menú hamburguesa se cirre al pulsar fuera
+    this.renderer.listen('document', 'click', (event: any) => {
+      const target = event.target;
+
+      if (
+        !target.closest('.navbar-collapse') &&
+        !target.closest('.navbar-toggler')
+      ) {
+        const navbarCollapse = document.querySelector('.navbar-collapse');
+        if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+          navbarCollapse.classList.remove('show');
+        }
+      }
+    });
     // Comprobar si hay un token guardado en localStorage
     const token = localStorage.getItem('token');
     if (token) {

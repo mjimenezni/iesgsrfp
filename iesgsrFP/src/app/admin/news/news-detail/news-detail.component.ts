@@ -60,7 +60,8 @@ export class NewsDetailComponent {
   }
 
   onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
+    this.selectedFile =
+      event.target.files.length > 0 ? event.target.files[0] : null;
   }
 
   onSubmit() {
@@ -69,12 +70,14 @@ export class NewsDetailComponent {
     if (this.newsForm.invalid) {
       return;
     }
+
     const news: New = {
       titulo: this.f.titulo.value,
       fecha: this.f.fecha.value,
       contenido: this.f.contenido.value,
-      imagen: this.f.imagen.value,
+      imagen: this.selectedFile ? this.f.imagen.value : '',
     };
+    console.log(news);
 
     if (this.noticia.idnoticia !== undefined) {
       this.newsService

@@ -13,7 +13,7 @@
           [ngClass]="{ 'is-invalid': submitted && f.titulo.errors }"
         />
         <div *ngIf="submitted && f.titulo.errors" class="invalid-feedback">
-          El título es requerido
+          <p>El título es requerido</p>
         </div>
       </div>
 
@@ -33,7 +33,11 @@
           class="form-control"
           id="contenido"
           formControlName="contenido"
+          [ngClass]="{ 'is-invalid': submitted && f.contenido.errors }"
         ></textarea>
+        <div *ngIf="submitted && f.contenido.errors">
+          <p class="text-danger">El contenido es requerido</p>
+        </div>
       </div>
 
       <div class="mb-3">
@@ -49,7 +53,7 @@
         <img
           [src]="noticia.imagen"
           class="img-fluid rounded-5 img-thumbnail"
-          style="width: 50%"
+          style="width: 25%"
         />
       </div>
 

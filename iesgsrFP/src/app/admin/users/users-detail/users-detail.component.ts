@@ -21,6 +21,7 @@ export class UsersDetailComponent {
   id: number | undefined;
   usuario: User = new User();
   grupos: Group[] | undefined;
+  isAdminDisabled = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,6 +32,11 @@ export class UsersDetailComponent {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    // Si el ID es el del usuario Administrador se desabilitará el checkbox de "Es Administrador"
+    if (id === 1) {
+      this.isAdminDisabled = true;
+    }
 
     //muestra los valores actuales en el formulario
     this.userService.getUserById(id).subscribe((data: User) => {
@@ -50,7 +56,10 @@ export class UsersDetailComponent {
     this.usersForm = this.formBuilder.group({
       nombre: ['', Validators.required],
       email: ['', Validators.required],
-      isAdmin: ['', Validators.required],
+      isAdmin: [
+        { value: '', disabled: this.isAdminDisabled },
+        Validators.required,
+      ],
       idgrupo: new FormControl('', Validators.required),
     });
 

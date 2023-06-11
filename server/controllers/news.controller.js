@@ -5,7 +5,7 @@ exports.getAllNews =  async (req, res) => {
   let connection;
   try {
     connection = await dbconnection.getConnection();
-    const [results] = await connection.execute('SELECT * FROM noticias');
+    const [results] = await connection.execute('SELECT * FROM noticias ORDER BY fecha DESC');
     
     res.json(results);
   } catch (error) {
@@ -76,10 +76,19 @@ exports.editNew = async (req, res) => {
     connection = await dbconnection.getConnection();
     const { titulo, contenido, fecha } = req.body ;
     const imagen = req.file ? 'assets/img/news/' + req.file.originalname : '';
-     const [results] = await connection.execute(
-      'UPDATE noticias SET titulo = ?, contenido = ?, fecha = ?, imagen=? WHERE idnoticia = ?',
-      [titulo, contenido, fecha, imagen, req.params.idnoticia]
-    );
+
+    //Si no se recibe ninguna imagen, se deja la imagen anterior
+    if (imagen === '') {
+      sql = 'UPDATE noticias SET titulo = ?, contenido = ?, fecha = ? WHERE idnoticia = ?';
+      params = [titulo, contenido, fecha, req.params.idnoticia];
+    } else {
+      sql = 'UPDATE noticias SET titulo = ?, contenido = ?, fecha = ?, imagen = ? WHERE idnoticia = ?';
+      params = [titulo, contenido, fecha, imagen, req.params.idnoticia];
+    }
+     
+    const [results] = await connection.execute(sql, params);
+
+
     res.json({ success: true });
   } catch (error) {
     console.error(error);

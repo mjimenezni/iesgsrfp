@@ -12,9 +12,10 @@ exports.createUser = async (req, res) => {
     
     //Se establece avatar por defecto
     const avatar = 'assets/img/avatar/ava1-bg.webp';
+    
       
-    const [results] = await connection.execute('INSERT INTO usuarios (nombre, email, password, isAdmin) VALUES (?, ?, ?, ?)', [nombre, email, password,isAdmin]);
-   res.json({ idusuario: results.insertId, email, nombre, password, isAdmin});
+    const [results] = await connection.execute('INSERT INTO usuarios (nombre, email, password, isAdmin,avatar) VALUES (?, ?, ?, ?,?)', [nombre, email, password,isAdmin,avatar]);
+   res.json({ idusuario: results.insertId, email, nombre, password, isAdmin,avatar});
   } catch (error) {
     console.error(error);
     res.status(500).send(error);
