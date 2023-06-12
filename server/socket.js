@@ -14,9 +14,9 @@ function handleSockets(server) {
   host: 'localhost',
 });
 
-  // manejar conexiones de sockets entrantes
+// manejar conexiones de sockets entrantes
   io.on('connection', (socket) => {
-    console.log('Usuario conectado:', socket.id);
+    //console.log('Usuario conectado:', socket.id);
     const token = socket.handshake.auth.token;
     socket.join(token);
   
@@ -36,26 +36,35 @@ function handleSockets(server) {
       
     });
 
- // desconectar el socket cuando el cliente se desconecta
+    // desconectar el socket cuando el cliente se desconecta
     socket.on('disconnect', () => {
       console.log('El cliente se ha desconectado');
     });
 
-     socket.on('get messages', (data) => {
-        const idorigen = data.idorigen;
-        const iddestino = data.iddestino;
-        console.log(idorigen, iddestino);
+    socket.on('get messages', (data) => {
+      const idorigen = data.idorigen;
+      const iddestino = data.iddestino;
+
+      // Actualizar el campo "leido" a 1 para los mensajes del usuario actual
+      pool.query('UPDATE mensajes SET leido = 1 WHERE iddestino = ?',[iddestino])
+      .then(() => {
+        // Obtener los mensajes de la base de datos
         pool.query('SELECT * FROM mensajes WHERE (idorigen = ? AND iddestino = ?) OR (idorigen = ? AND iddestino = ?) ORDER BY fechahora ASC', [idorigen, iddestino, iddestino, idorigen])
             .then((result) => {
-                const messages = result[0];
-                io.to(socket.id).emit('messages', messages);
-                //console.log(messages)
-      })
+              const messages = result[0];
+              io.to(socket.id).emit('messages', messages);
+              //console.log(messages)
+              })
+            .catch((error) => {
+              console.error(`Error al recuperar los mensajes de la base de datos: ${error}`);
+            });
+        })
       .catch((error) => {
-        console.error(`Error al recuperar los mensajes de la base de datos: ${error}`);
-        });
-  });
+          console.error(`Error al actualizar el campo "leido" en la base de datos: ${error}`);
+      });
+    });
   });
 }
+
 
 module.exports = handleSockets;

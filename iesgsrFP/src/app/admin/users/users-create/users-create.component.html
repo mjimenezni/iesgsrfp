@@ -4,7 +4,7 @@
 
     <form [formGroup]="usersForm" (ngSubmit)="onSubmit()">
       <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
+        <label for="email" class="form-label">Email/Username</label>
         <input
           type="email"
           class="form-control"
@@ -13,7 +13,7 @@
           [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
         />
         <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-          El email es requerido
+          El email/username es requerido
         </div>
       </div>
 

@@ -30,12 +30,10 @@
             <p class="text-muted mb-0">{{ nota.fecha }}</p>
           </td>
           <td>
-            <div *ngIf="notasGrupoCargadas">
-              <p *ngFor="let grupo of notasGrupo[i] || []">
-                {{ grupo.nombre }}
-              </p>
-              <p *ngIf="(notasGrupo[i] || []).length === 0">Ninguno</p>
-            </div>
+            <p *ngFor="let grupo of notasGrupo[i] || []">
+              {{ grupo.nombre }}
+            </p>
+            <p *ngIf="(notasGrupo[i] || []).length === 0">Ninguno</p>
           </td>
           <!--<td>
             <span class="badge badge-success rounded-pill d-inline"
@@ -61,17 +59,10 @@
           </td>
         </tr>
       </tbody>
-      <tbody *ngIf="notasGrupoCargadas && notasGrupo.length == 0">
+      <tbody *ngIf="notasGrupo.length == 0">
         <tr>
           <td colspan="5">
             <p>No hay notas disponibles.</p>
-          </td>
-        </tr>
-      </tbody>
-      <tbody *ngIf="!notasGrupoCargadas">
-        <tr>
-          <td colspan="5">
-            <p>Cargando notas...</p>
           </td>
         </tr>
       </tbody>

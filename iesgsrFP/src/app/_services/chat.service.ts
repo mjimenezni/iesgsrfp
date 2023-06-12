@@ -12,6 +12,9 @@ export class ChatService {
   accountService: AccountService;
   private socket: any;
 
+  //contador de mensajes sin leer
+  unreadMessagesCount: number = 0;
+
   idorigen: number = 0;
   iddestino: number = 0;
 
@@ -54,6 +57,11 @@ export class ChatService {
       this.socket.emit('get messages', { idorigen, iddestino });
       this.socket.on('messages', (messages: any[]) => {
         observer.next(messages);
+
+        // Calcular la cantidad de mensajes sin leer
+        this.unreadMessagesCount = messages.filter(
+          (message) => !message.leido
+        ).length;
       });
     });
   }

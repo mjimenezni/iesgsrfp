@@ -41,10 +41,6 @@ const routes: Routes = [
     component: ProfilePasswordComponent,
     canActivate: [AuthGuard],
   },
-  //{ path: 'admin', component: AdminComponent },
-
-  // en el resto de casos redirecciona al inicio
-  //{ path: '**', redirectTo: 'index' },
 ];
 
 @NgModule({

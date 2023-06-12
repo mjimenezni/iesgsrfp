@@ -21,7 +21,6 @@ export class NotesListComponent {
   notas: Note[] = [];
   notasGrupo: any[][] = []; //lista de grupos asociados a cada nota
   nuevaNota: Note = new Note();
-  notasGrupoCargadas: boolean = false;
   deleteConfirmation = false;
 
   constructor(
@@ -41,14 +40,11 @@ export class NotesListComponent {
         nota.fecha = this.datePipe.transform(nota.fecha, 'dd/MM/yyyy');
       });
       this.notas = notas;
-      this.notasGrupoCargadas = false;
+
       notas.forEach((nota) => {
         if (nota.idnota) {
           this.notesService.getGroupNotes(nota.idnota).subscribe((grupos) => {
             this.notasGrupo.push(grupos);
-            if (this.notasGrupo.length == notas.length) {
-              this.notasGrupoCargadas = true;
-            }
           });
         }
       });

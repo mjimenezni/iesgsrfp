@@ -64,8 +64,9 @@
                               <p class="small text-muted mb-1">Just now</p>
                               <span
                                 class="badge bg-danger rounded-pill float-end"
+                                *ngIf="unreadMessagesCount > 0"
                               >
-                                mensajes sin leer
+                                {{ unreadMessagesCount }} mensajes sin leer
                               </span>
                             </div>
                           </div>

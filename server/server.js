@@ -19,9 +19,8 @@ const handleSockets = require('./socket');
 // rutas y lógica del servidor express
 const noticiasRouter = require('./routes/news');
 const loginRouter = require('./routes/auth');
-const usersRouter = require('./routes/users')
-const registerRouter = require('./routes/register')
-const chatRouter =require('./routes/chat');
+const usersRouter = require('./routes/users');
+const registerRouter = require('./routes/register');
 const notesRouter=require('./routes/notes');
 const groupsRouter=require('./routes/groups');
 const calendarRouter=require('./routes/calendar')
@@ -33,7 +32,6 @@ app.use('/login', loginRouter);
 app.use('/noticias', noticiasRouter);
 app.use('/users', usersRouter);
 app.use('/register', registerRouter);
-app.use('/messages', chatRouter);
 app.use('/notes', notesRouter);
 app.use('/groups', groupsRouter);
 app.use('/events', calendarRouter);

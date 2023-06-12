@@ -46,4 +46,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   selectUser(user: User) {
     this.chatService.selectUser(user);
   }
+
+  get unreadMessagesCount(): number {
+    return this.chatService.unreadMessagesCount;
+  }
 }
