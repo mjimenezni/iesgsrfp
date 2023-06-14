@@ -4,4 +4,5 @@ export class Message {
   iddestino?: number;
   mensaje?: string;
   fechahora?: Date;
+  leido?: boolean;
 }

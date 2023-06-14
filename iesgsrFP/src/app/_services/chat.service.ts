@@ -12,11 +12,11 @@ export class ChatService {
   accountService: AccountService;
   private socket: any;
 
-  //contador de mensajes sin leer
-  unreadMessagesCount: number = 0;
-
   idorigen: number = 0;
   iddestino: number = 0;
+
+  private usersSubject = new BehaviorSubject<any[]>([]);
+  users$ = this.usersSubject.asObservable();
 
   private selectedUserSource = new BehaviorSubject<User | null>(null);
   selectedUser$ = this.selectedUserSource.asObservable();
@@ -27,6 +27,9 @@ export class ChatService {
 
   selectUser(user: User) {
     this.selectedUserSource.next(user);
+  }
+  updateUsers(users: any[]): void {
+    this.usersSubject.next(users);
   }
 
   public connect(idusuario: number): void {
@@ -57,11 +60,18 @@ export class ChatService {
       this.socket.emit('get messages', { idorigen, iddestino });
       this.socket.on('messages', (messages: any[]) => {
         observer.next(messages);
+      });
+    });
+  }
 
-        // Calcular la cantidad de mensajes sin leer
-        this.unreadMessagesCount = messages.filter(
-          (message) => !message.leido
-        ).length;
+  getUnreadMessagesCount(iddestino: number): void {
+    this.socket.emit('getUnreadMessagesCount', { iddestino });
+  }
+
+  receiveUnreadMessagesCount(): Observable<any> {
+    return new Observable<any>((observer) => {
+      this.socket.on('unreadMessagesCount', (data: any) => {
+        observer.next(data);
       });
     });
   }

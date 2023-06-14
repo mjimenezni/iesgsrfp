@@ -27,12 +27,16 @@ export class ChatComponent implements OnInit, OnDestroy {
     private accountService: AccountService
   ) {}
   ngOnInit(): void {
-    this.getUsers();
-
     this.accountService.currentUser.subscribe((currentUser) => {
       this.currentUser = currentUser;
     });
+    this.getUsers();
+
     this.chatService.connect(this.currentUser.idusuario);
+
+    this.chatService.users$.subscribe((users) => {
+      this.users = users;
+    });
   }
   ngOnDestroy(): void {
     this.chatService.disconnect();
@@ -41,13 +45,26 @@ export class ChatComponent implements OnInit, OnDestroy {
   getUsers(): void {
     this.userService.getAllUsers().subscribe((users) => {
       this.users = users;
+
+      this.chatService.getUnreadMessagesCount(this.currentUser.idusuario);
+
+      this.chatService
+        .receiveUnreadMessagesCount()
+        .subscribe((unreadMessagesCount) => {
+          for (const user of this.users) {
+            user.unreadCount = unreadMessagesCount[user.idusuario] || 0;
+          }
+        });
+      this.chatService.updateUsers(users);
     });
   }
   selectUser(user: User) {
     this.chatService.selectUser(user);
-  }
+    const selectedUser = this.users.find((u) => u.idusuario === user.idusuario);
 
-  get unreadMessagesCount(): number {
-    return this.chatService.unreadMessagesCount;
+    //Resetear mensajes no leidos
+    if (selectedUser) {
+      selectedUser.unreadCount = 0;
+    }
   }
 }

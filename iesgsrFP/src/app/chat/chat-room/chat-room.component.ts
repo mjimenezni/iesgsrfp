@@ -22,6 +22,8 @@ export class ChatRoomComponent implements OnInit {
   currentUser: any;
   selectedUser?: User | null;
 
+  users: any[] = [];
+
   messages: any[] = []; //recupera los mensajes de la B.D.
 
   messageInput: string = '';
@@ -34,10 +36,18 @@ export class ChatRoomComponent implements OnInit {
     this.accountService.currentUser.subscribe((currentUser) => {
       this.currentUser = currentUser;
     });
+
+    this.chatService.users$.subscribe((users) => {
+      this.users = users;
+    });
+
     this.chatService.selectedUser$.subscribe((user) => {
       this.selectedUser = user;
-      if (this.selectedUser) {
+
+      if (this.selectedUser?.idusuario) {
         const receiverId = this.selectedUser.idusuario;
+
+        this.updateUnreadCount(this.selectedUser.idusuario);
 
         this.chatService
           .getMessages(this.currentUser.idusuario, receiverId || 0)
@@ -48,6 +58,8 @@ export class ChatRoomComponent implements OnInit {
     });
     this.chatService.receiveMessageFromUser().subscribe((data: any) => {
       this.messages.push(data);
+
+      if (data.idorigen) this.updateUnreadCount(data.idorigen);
     });
   }
 
@@ -57,6 +69,7 @@ export class ChatRoomComponent implements OnInit {
       iddestino: this.selectedUser?.idusuario,
       idorigen: this.currentUser.idusuario,
       fechahora: new Date(),
+      leido: false,
     };
 
     this.chatService.sendMessageToUser(message);
@@ -69,5 +82,16 @@ export class ChatRoomComponent implements OnInit {
     const format = 'dd/MMM hh:mm a';
     const formattedDateTime = this.datePipe.transform(date, format);
     return formattedDateTime || ''; // Devuelve una cadena vacía si el valor es nulo
+  }
+
+  updateUnreadCount(userId: number): void {
+    const user = this.users.find((user) => user.idusuario === userId);
+    if (user) {
+      if (user === this.selectedUser && user.unreadCount) {
+        user.unreadCount = 0;
+      } else if (user !== this.selectedUser) {
+        user.unreadCount = user.unreadCount ? user.unreadCount + 1 : 1;
+      }
+    }
   }
 }

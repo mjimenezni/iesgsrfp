@@ -21,7 +21,7 @@ function handleSockets(server) {
     socket.join(token);
   
     socket.on('private message', (data) => {
-      console.log(`message: ${data.mensaje}, fromUserId: ${data.idorigen}, toUserId: ${data.iddestino}`);
+      
       // Insertar el mensaje en la base de datos
       pool.query('INSERT INTO mensajes (idorigen, iddestino, mensaje) VALUES (?, ?, ?)', [data.idorigen, data.iddestino, data.mensaje])
         .then((result) => {
@@ -44,9 +44,9 @@ function handleSockets(server) {
     socket.on('get messages', (data) => {
       const idorigen = data.idorigen;
       const iddestino = data.iddestino;
-
-      // Actualizar el campo "leido" a 1 para los mensajes del usuario actual
-      pool.query('UPDATE mensajes SET leido = 1 WHERE iddestino = ?',[iddestino])
+    
+      // Actualizar el campo "leido" a 1 de la conversación obtenida
+      pool.query('UPDATE mensajes SET leido = 1 WHERE idorigen = ? AND iddestino= ?',[iddestino,idorigen])
       .then(() => {
         // Obtener los mensajes de la base de datos
         pool.query('SELECT * FROM mensajes WHERE (idorigen = ? AND iddestino = ?) OR (idorigen = ? AND iddestino = ?) ORDER BY fechahora ASC', [idorigen, iddestino, iddestino, idorigen])
@@ -63,6 +63,27 @@ function handleSockets(server) {
           console.error(`Error al actualizar el campo "leido" en la base de datos: ${error}`);
       });
     });
+
+    socket.on('getUnreadMessagesCount', async (data) => {
+      const iddestino = data.iddestino;
+     
+      try {
+        // Obtener el número de mensajes no leídos para cada usuario
+        const [results] = await pool.query('SELECT idorigen, COUNT(*) AS totalNoleidos FROM mensajes WHERE iddestino = ? AND leido = 0 GROUP BY idorigen', [iddestino]);
+        const unreadMessagesCount = {};
+
+        for (const row of results) {
+          const { idorigen, totalNoleidos } = row;
+          unreadMessagesCount[idorigen] = totalNoleidos;
+        }
+       
+        // Enviar el número de mensajes no leídos por cada usuario al cliente
+        io.to(socket.id).emit('unreadMessagesCount', unreadMessagesCount);
+      } catch (error) {
+        console.error(`Error al obtener el número de mensajes no leídos por cada usuario: ${error}`);
+      }
+    });
+
   });
 }
 
