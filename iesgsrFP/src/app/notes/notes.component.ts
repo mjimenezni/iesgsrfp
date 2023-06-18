@@ -3,6 +3,7 @@ import { NotesService } from '../_services/notes.service';
 import { Note } from '../_models/note';
 import { AccountService } from '../_services';
 import { UserService } from '../_services/users.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-notes',
@@ -17,7 +18,8 @@ export class NotesComponent {
   constructor(
     private notesService: NotesService,
     private accountService: AccountService,
-    private userService: UserService
+    private userService: UserService,
+    private datePipe: DatePipe
   ) {}
   ngOnInit(): void {
     this.accountService.currentUser.subscribe((currentUser) => {
@@ -33,6 +35,10 @@ export class NotesComponent {
     this.notesService
       .getNotesByGroup(this.currentUser.idgrupo)
       .subscribe((groupNotes) => {
+        // Formatear la fecha de cada nota
+        groupNotes.forEach((nota) => {
+          nota.fecha = this.datePipe.transform(nota.fecha, 'dd/MM/yyyy');
+        });
         this.notes = groupNotes;
       });
   }

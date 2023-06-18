@@ -29,16 +29,21 @@
       <!-- Left links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" href="#" routerLink="/">Inicio</a>
+          <a class="nav-link" href="#" routerLink="/" (click)="closeMenu()"
+            >Inicio</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" routerLink="/news"> Noticias</a>
+          <a class="nav-link" href="#" routerLink="/news" (click)="closeMenu()">
+            Noticias</a
+          >
         </li>
         <li class="nav-item">
           <a
             class="nav-link"
             href="#"
             routerLink="/calendar"
+            (click)="closeMenu()"
             *ngIf="accountService.isLoggedIn | async"
           >
             Calendario de tareas y exámenes</a
@@ -49,6 +54,7 @@
             class="nav-link"
             href="#"
             routerLink="/notes"
+            (click)="closeMenu()"
             *ngIf="accountService.isLoggedIn | async"
           >
             Tablón de notas</a
@@ -59,6 +65,7 @@
             class="nav-link"
             href="#"
             routerLink="/chat"
+            (click)="closeMenu()"
             *ngIf="accountService.isLoggedIn | async"
           >
             Chat</a

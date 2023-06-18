@@ -29,7 +29,12 @@
 
       <div class="mb-3">
         <label for="idgrupo" class="form-label me-3">Grupo:</label>
-        <select formControlName="idgrupo" name="idgrupo" class="ml-2">
+        <select
+          formControlName="idgrupo"
+          name="idgrupo"
+          class="ml-2"
+          [ngClass]="{ 'is-invalid': submitted && f.idgrupo.errors }"
+        >
           <option *ngFor="let grupo of grupos" [value]="grupo.idgrupo">
             {{ grupo.nombre }}
           </option>

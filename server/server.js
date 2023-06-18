@@ -24,8 +24,7 @@ const registerRouter = require('./routes/register');
 const notesRouter=require('./routes/notes');
 const groupsRouter=require('./routes/groups');
 const calendarRouter=require('./routes/calendar')
-// Middleware para validar el token en las rutas protegidas
-//app.use('/chat', verificarToken, chatRouter);
+
 
 // Rutas públicas
 app.use('/login', loginRouter);

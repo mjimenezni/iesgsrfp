@@ -3,6 +3,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { AccountService } from './_services';
 import { Renderer2 } from '@angular/core';
 import 'src/assets/js/bundle.min.js';
+import { ViewChild } from '@angular/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,6 +15,8 @@ export class AppComponent {
   isLoggedIn: boolean = false;
   isAdmin: boolean = false;
   currentUser: any;
+
+  isMenuOpen = false;
 
   constructor(
     public accountService: AccountService,
@@ -62,5 +65,13 @@ export class AppComponent {
   }
   onLogout() {
     this.accountService.logout();
+  }
+
+  //Función para que se vuelva a plegar el menú hamburguesa al seleccionar un elemento
+  closeMenu(): void {
+    const navbarCollapse = document.querySelector('.navbar-collapse');
+    if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+      navbarCollapse.classList.remove('show');
+    }
   }
 }

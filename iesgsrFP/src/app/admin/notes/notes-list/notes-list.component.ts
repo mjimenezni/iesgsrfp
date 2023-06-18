@@ -35,7 +35,7 @@ export class NotesListComponent {
 
   getNotes() {
     this.notesService.getAllNotes().subscribe((notas) => {
-      // Formatear la fecha de cada noticia
+      // Formatear la fecha de cada nota
       notas.forEach((nota) => {
         nota.fecha = this.datePipe.transform(nota.fecha, 'dd/MM/yyyy');
       });

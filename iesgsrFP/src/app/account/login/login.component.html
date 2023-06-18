@@ -27,13 +27,13 @@
                         'is-invalid': submitted && f.email.errors
                       }"
                     />
-                    <label class="form-label" for="email">Email</label>
+                    <label class="form-label" for="email">Email/Username</label>
                     <div
                       *ngIf="submitted && f.email.errors"
                       class="invalid-feedback"
                     >
                       <div *ngIf="f.email.errors.required">
-                        El email es obligatorio
+                        El email/username es obligatorio
                       </div>
                     </div>
                   </div>

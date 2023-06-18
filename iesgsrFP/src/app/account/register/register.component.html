@@ -27,7 +27,9 @@
                         'is-invalid': submitted && f.email.errors
                       }"
                     />
-                    <label class="form-label" for="email">Email/Username</label>
+                    <label class="form-label" for="email"
+                      >Email/Username *</label
+                    >
                     <div
                       *ngIf="submitted && f.email.errors"
                       class="invalid-feedback"
@@ -47,7 +49,9 @@
                         'is-invalid': submitted && f.password.errors
                       }"
                     />
-                    <label class="form-label" for="password">Contraseña</label>
+                    <label class="form-label" for="password"
+                      >Contraseña *</label
+                    >
                     <div
                       *ngIf="submitted && f.password.errors"
                       class="invalid-feedback"
@@ -68,7 +72,7 @@
                       }"
                     />
                     <label class="form-label" for="confirmPassword"
-                      >Repite contraseña</label
+                      >Repite contraseña *</label
                     >
                     <div *ngIf="passwordsDoNotMatch" class="text-danger">
                       Las contraseñas no coinciden.
@@ -119,6 +123,7 @@
                       class="invalid-feedback"
                     ></div>
                   </div>
+                  <p>* campos obligatorios</p>
                   <div *ngIf="error !== ''" class="alert alert-danger">
                     Error en el registro. {{ error }}
                   </div>
